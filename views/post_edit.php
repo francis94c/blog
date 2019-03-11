@@ -1,13 +1,18 @@
+<?php
+if (!isset($title)) $title = "";
+if (!isset($content)) $content = "";
+if (!isset($prompt_color)) $prompt_color = "w3-green";
+?>
 <div id="modal" class="w3-modal w3-animate-opacity">
   <div class="w3-modal-content">
-    <header class="w3-container w3-green">
+    <header class="w3-container <?=$prompt_color?>">
       <span onclick="document.getElementById('modal').style.display = 'none'" class="w3-button w3-hover-blue w3-display-topright">
         <i class="fa fa-times"></i>
       </span>
       <h2>Publish?</h2>
     </header>
     <div class="w3-container">
-      <p>Are you sure you want to publish this article?</p>
+      <p>Are you sure you want to publish this content?</p>
       <div class="w3-right">
         <button onclick="document.getElementById('modal').style.display = 'none'" class="w3-margin w3-button w3-hover-blue w3-green">No</button>
         <button onclick="document.getElementById('modal').style.display = 'none';saveAndPublish();" class="w3-margin w3-button w3-hover-blue w3-green">Yes</button>
@@ -40,7 +45,7 @@ var simpleMDE = new SimpleMDE(
     element: document.getElementById("edi")
   }
 );
-simpleMDE.value(document.getElementById("content")).innerHTML;
+simpleMDE.value(document.getElementById("content").innerHTML);
 //var markdown = simpleMDE.value();
 //markdown = markdown.replace(/    /g, "  \r\n");
 //simpleMDE.value(markdown);
@@ -62,5 +67,5 @@ function promptPublish() {
 <input type="hidden" name="id" value="<?=$type == "edit" ? $id : ""?>"/>
 <input id="action" type="hidden" name="action" value="publish"/>
 <?=form_close();?>
-<button onclick="save();" class="w3-margin w3-button w3-theme-d2 w3-round w3-hover-theme"><?=$type == "edit" ? "Save" : "Create"?></button>
-<button onclick="promptPublish();" class="w3-margin w3-button w3-theme-d2 w3-hover-theme w3-round"><?=$type == "edit" ? "Save and Publish" : "Create and Publish"?></button>
+<button onclick="save();" class="w3-margin w3-button w3-teal w3-round w3-hover-theme"><?=$type == "edit" ? "Save" : "Create"?></button>
+<button onclick="promptPublish();" class="w3-margin w3-button w3-teal w3-hover-theme w3-round"><?=$type == "edit" ? "Save and Publish" : "Create and Publish"?></button>
