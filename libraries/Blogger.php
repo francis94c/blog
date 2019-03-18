@@ -80,13 +80,12 @@ class Blogger {
    * [loadCreateView description]
    * @return [type] [description]
    */
-  function loadCreateView() {
+  function loadCreateView($callback) {
     $this->ci->load->helper("form");
     $this->ci->load->splint("francis94c/blog", "-post_edit", array(
       "callback" => "Admin/token",
-      "title"    => "Hello World",
-      "content"  => "Hello Again",
-      "type"     => "create"
+      "type"     => "create",
+      "callback" => $callback
     ));
   }
 }
