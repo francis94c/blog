@@ -9,5 +9,9 @@ class BlogTest {
     $ci->blogger->loadScripts();
     $ci->blogger->loadCreateView("callback");
   }
+  function savePostTest(&$ci) {
+    $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
+    $ci->unit->run($ci->blogger->savePost(), true, "Save Post Test.");
+  }
 }
 ?>

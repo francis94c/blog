@@ -13,9 +13,9 @@ class Blogger {
     if (func_num_args() > 0) $params = func_get_arg(0);
     $this->ci =& get_instance();
     $this->ci->load->database();
-    $this->ci->load->splint("francis94c/ci-preference", "+CIPreferences", array(
-      "file_name" => "blogger_config.json"
-    ), "prefs");
+    //$this->ci->load->splint("francis94c/ci-preference", "+CIPreferences", array(
+    //  "file_name" => "blogger_config.json"
+    //), "prefs");
     $this->ci->load->database();
     $this->db =& $this->ci->db;
   }
@@ -87,6 +87,9 @@ class Blogger {
       "type"     => "create",
       "callback" => $callback
     ));
+  }
+  function savePost() {
+
   }
 }
 ?>
