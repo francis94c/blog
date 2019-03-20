@@ -9,6 +9,10 @@ class Blogger {
 
   private $dbforge;
 
+  const CREATE = "create";
+
+  const CREATE_AND_PUBLISH = "create_and_publish";
+
   function __construct() {
     if (func_num_args() > 0) $params = func_get_arg(0);
     $this->ci =& get_instance();
@@ -88,8 +92,33 @@ class Blogger {
       "callback" => $callback
     ));
   }
+  /**
+   * [savePost description]
+   * @return [type] [description]
+   */
   function savePost() {
-
+    $this->load->model("BlogManager", "blogger");
+    if ($this->ci->input->post("action") == "save") {
+      $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
+      if ($id != "") {
+        $this->ci->blogger->savePost($this->ci->input->post("id"), $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")));
+      } else {
+        $this->ci->blogger->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")));
+      }
+    }
+    if ($this->ci->input->post("action") == "publish" || $this->ci->input->post("action") == "createAndPublish") {
+      $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
+      if ($id != "") {
+        $this->ci->blogger->publishPost($id);
+      } else {
+        $this->ci->blogger->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")));
+      }
+    }
+    $action = $this->ci->input->post("action");
+    if ($action == "createAndPublish") {
+    } elseif ($action == "create") {
+      return self::CREATE;
+    } 
   }
 }
 ?>
