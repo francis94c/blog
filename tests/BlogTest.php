@@ -7,11 +7,12 @@ class BlogTest {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
     $ci->unit->run($ci->blogger->install("admins", "id", 1), true, "Install Blog Database.");
     $ci->blogger->loadScripts();
-    $ci->blogger->loadCreateView("callback");
+    $ci->blogger->loadEditor("callback");
   }
-  function savePostTest(&$ci) {
+
+  function createPostTest(&$ci) {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
-    $ci->unit->run($ci->blogger->savePost(), true, "Save Post Test.");
+    $ci->unit->run($ci->blogger->savePost(), Blogger::CREATE, "Save Post Test.");
   }
 }
 ?>
