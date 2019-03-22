@@ -57,8 +57,24 @@ class BlogManager extends CI_Model {
   function getPost($postId) {
     $this->db->where("id", $postId);
     $query = $this->db->get("blogger_posts");
-    if ($query->num_rows() > 0) return $query->result_array()[0];
+    if ($query->num_rows() > 0) {
+      $this->db->where("id", $postId);
+      $this->db->set("hits", "hits+1", FALSE);
+      $this->db->update("blogger_posts");
+      return $query->result_array()[0];
+    }
     return false;
+  }
+  /**
+   * [getHits description]
+   * @param  [type] $postId [description]
+   * @return [type]         [description]
+   */
+  function getHits($postId) {
+    $this->db->where("id", $postId);
+    $query = $this->db->get("blogger_posts");
+    if ($query->num_rows() > 0) return $query->result()[0]->hits;
+    return 0;
   }
 }
 ?>
