@@ -122,8 +122,11 @@ class Blogger {
     $action = $this->ci->input->post("action");
     if ($action == "createAndPublish") {
       return self::CREATE_AND_PUBLISH;
-    } elseif ($action == "save" && $id == "") {
-      return self::CREATE;
+    } elseif ($action == "save") {
+      if ($id == "") return self::CREATE;
+      return self::EDIT;
+    } elseif ($action == "publish") {
+      return self::PUBLISH;
     }
     return false;
   }
