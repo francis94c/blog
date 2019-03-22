@@ -25,21 +25,23 @@ class BlogManager extends CI_Model {
     return false;
   }
   /**
-   * [getPosts description]
-   * @param  [type] $page  [description]
-   * @param  [type] $limit [description]
-   * @return [type]        [description]
+   * [getPosts get posts from the database by the given $page starting from the
+   * value of 1 and returns $limit number of rows.]
+   * @param  int   $page  Page number starting from 1.
+   * @param  int   $limit Number of posts to return.
+   * @return array Array of posts for a given page.
    */
   function getPosts($page, $limit) {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
     return $this->db->get("blogger_posts")->result_array();
   }
   /**
-   * [savePost description]
-   * @param  [type] $postId  [description]
-   * @param  [type] $title   [description]
-   * @param  [type] $content [description]
-   * @return [type]          [description]
+   * [savePost saves or midfies the content of a post record given by $postId
+   * in the database.]
+   * @param  int    $postId  ID of the post to modify.
+   * @param  string $title   New title of the post.
+   * @param  string $content New content of the post.
+   * @return bool            True on success, False if not.
    */
   function savePost($postId, $title, $content) {
     $data = array (
@@ -50,9 +52,10 @@ class BlogManager extends CI_Model {
     return $this->db->update("blogger_posts", $data);
   }
   /**
-   * [getPost description]
-   * @param  [type] $postId [description]
-   * @return [type]         [description]
+   * [getPost Gets a specific post by the given value of $postId. NB: This will
+   * increment the hit count of the particularpost in the database.]
+   * @param  int   $postId ID of the post to retrieve.
+   * @return array An associative array for the Posts's data.
    */
   function getPost($postId) {
     $this->db->where("id", $postId);
@@ -76,6 +79,12 @@ class BlogManager extends CI_Model {
     if ($query->num_rows() > 0) return $query->result()[0]->hits;
     return 0;
   }
+  /**
+   * [publishPost description]
+   * @param  [type] $postId  [description]
+   * @param  [type] $publish [description]
+   * @return [type]          [description]
+   */
   function publishPost($postId, $publish) {
     $this->db->where("id", $postId);
     $this->db->set("published", $publish ? 1 : 0);
