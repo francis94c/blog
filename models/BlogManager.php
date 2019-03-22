@@ -16,7 +16,8 @@ class BlogManager extends CI_Model {
       "content" => $content
     );
     if ($adminId != null) $data["poster_id"] = $adminId;
-    return $this->db->insert("blogger_posts", $data);
+    if ($this->db->insert("blogger_posts", $data)) return $this->db->insert_id();
+    return false;
   }
   /**
    * [getPosts description]
