@@ -18,9 +18,15 @@ class BlogManager extends CI_Model {
     if ($adminId != null) $data["poster_id"] = $adminId;
     return $this->db->insert("blogger_posts", $data);
   }
+  /**
+   * [getPosts description]
+   * @param  [type] $page  [description]
+   * @param  [type] $limit [description]
+   * @return [type]        [description]
+   */
   function getPosts($page, $limit) {
-    $offset = $page * $limit;
-    if ($limit != 0) $this->db->limit($offset, $limit);
+    if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
+    return $this->db->get("blogger_posts")->result_array();
   }
 }
 ?>
