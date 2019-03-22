@@ -29,5 +29,31 @@ class BlogManager extends CI_Model {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
     return $this->db->get("blogger_posts")->result_array();
   }
+  /**
+   * [savePost description]
+   * @param  [type] $postId  [description]
+   * @param  [type] $title   [description]
+   * @param  [type] $content [description]
+   * @return [type]          [description]
+   */
+  function savePost($postId, $title, $content) {
+    $data = array (
+      "title"   => $title,
+      "content" => $content
+    );
+    $this->db->where("id", $postId);
+    return $this->db->update("blogger_posts", $data);
+  }
+  /**
+   * [getPost description]
+   * @param  [type] $postId [description]
+   * @return [type]         [description]
+   */
+  function getPost($postId) {
+    $this->db->where("id", $postId);
+    $query = $this->db->get("blogger_posts");
+    if ($query->num_rows() > 0) return $query->result_array()[0];
+    return false;
+  }
 }
 ?>
