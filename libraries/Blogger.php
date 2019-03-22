@@ -100,32 +100,29 @@ class Blogger {
     if ($postId != null) $data["id"] = $postId;
     $this->ci->load->splint("francis94c/blog", "-post_edit", $data);
   }
-  /**
-   * [savePost description]
-   * @return [type] [description]
-   */
-  function savePost() {
+
+  function savePost($posterId=null) {
     $this->ci->load->splint(self::PACKAGE, "*BlogManager", "bmanager");
     if ($this->ci->input->post("action") == "save") {
       $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
       if ($id != "") {
-        $this->ci->bmanager->savePost($this->ci->input->post("id"), $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")));
+        $this->ci->bmanager->savePost($this->ci->input->post("id"), $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
       } else {
-        $this->ci->bmanager->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")));
+        $this->ci->bmanager->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
       }
     }
     if ($this->ci->input->post("action") == "publish" || $this->ci->input->post("action") == "createAndPublish") {
       $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
       if ($id != "") {
-        $this->ci->bmanager->publishPost($id);
+        $this->ci->bmanager->publishPost($id, $posterId);
       } else {
-        $this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")));
+        $this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
       }
     }
     $action = $this->ci->input->post("action");
     if ($action == "createAndPublish") {
       return self::CREATE_AND_PUBLISH;
-    } elseif ($action == "create") {
+    } elseif ($action == "save" && $id == "") {
       return self::CREATE;
     }
     return false;
