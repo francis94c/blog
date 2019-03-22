@@ -12,7 +12,9 @@ class BlogTest {
 
   function createPostTest(&$ci) {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
-    $ci->unit->run($ci->blogger->savePost(1), Blogger::CREATE, "Save Post Test.");
+    $ci->unit->run($ci->blogger->savePost(1), Blogger::CREATE, "Create Post Test.");
+    $_POST["action"] = "createAndPublish";
+    $ci->unit->run($ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH, "Create and Publish Post Test.");
   }
 }
 ?>

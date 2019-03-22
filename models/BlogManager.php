@@ -25,6 +25,23 @@ class BlogManager extends CI_Model {
     return false;
   }
   /**
+   * [createAndPublish description]
+   * @param  [type] $title   [description]
+   * @param  [type] $content [description]
+   * @param  [type] $adminId [description]
+   * @return [type]          [description]
+   */
+  function createAndPublishPost($title, $content, $adminId=null) {
+    $data = array(
+      "title"     => $title,
+      "content"   => $content,
+      "published" => 1
+    );
+    if ($adminId != null) $data["poster_id"] = $adminId;
+    if ($this->db->insert("blogger_posts", $data)) return $this->db->insert_id();
+    return false;
+  }
+  /**
    * [getPosts get posts from the database by the given $page starting from the
    * value of 1 and returns $limit number of rows.]
    * @param  int   $page  Page number starting from 1.
