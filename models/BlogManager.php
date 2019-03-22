@@ -76,5 +76,10 @@ class BlogManager extends CI_Model {
     if ($query->num_rows() > 0) return $query->result()[0]->hits;
     return 0;
   }
+  function publishPost($postId, $publish) {
+    $this->db->where("id", $postId);
+    $this->db->set("published", $publish ? 1 : 0);
+    return $this->db->update("blogger_posts");
+  }
 }
 ?>

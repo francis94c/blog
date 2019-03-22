@@ -15,12 +15,16 @@ class ModelTest {
     $ci->unit->run($ci->bmanager->getPost($postId)["title"], "Hello", "Title Check");
     $ci->unit->run((int) $ci->bmanager->getHits($postId), 1, "Hit count test.");
     $ci->unit->run($ci->bmanager->getPost($postId)["content"], "World", "Content Check");
-      $ci->unit->run((int) $ci->bmanager->getHits($postId), 2, "Hit count test.");
+    $ci->unit->run((int) $ci->bmanager->getHits($postId), 2, "Hit count test.");
     $ci->unit->run($ci->bmanager->savePost($postId, "Hello Title", "Hello Content"), true, "Save Post.");
     $ci->unit->run($ci->bmanager->getPost($postId)["title"], "Hello Title", "Title Check");
-      $ci->unit->run((int) $ci->bmanager->getHits($postId), 3, "Hit count test.");
+    $ci->unit->run((int) $ci->bmanager->getHits($postId), 3, "Hit count test.");
     $ci->unit->run($ci->bmanager->getPost($postId)["content"], "Hello Content", "Content Check");
-      $ci->unit->run((int) $ci->bmanager->getHits($postId), 4, "Hit count test.");
+    $ci->unit->run((int) $ci->bmanager->getHits($postId), 4, "Hit count test.");
+    $ci->unit->run($ci->bmanager->publishPost($postId, true), true, "Publish Post.");
+    $ci->unit->run((int) $ci->bmanager->getPost($postId)["published"], 1, "Publish Check");
+    $ci->unit->run($ci->bmanager->publishPost($postId, false), true, "Unpublish Post");
+      $ci->unit->run((int) $ci->bmanager->getPost($postId)["published"], 0, "Publish Check");
     $this->cleanUp($ci);
   }
   private function cleanUp(&$ci) {
