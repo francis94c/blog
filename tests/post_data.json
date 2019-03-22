@@ -1,4 +1,6 @@
 {
-  "name": "Francis",
-  "action": "save"
+  "name":   "Francis",
+  "action": "save",
+  "title":  "Hello",
+  "editor": "World"
 }
