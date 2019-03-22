@@ -4,11 +4,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class BlogManager extends CI_Model {
 
   /**
-   * [createPost description]
-   * @param  [type] $title   [description]
-   * @param  [type] $content [description]
-   * @param  [type] $adminId [description]
-   * @return [type]          [description]
+   * [createPost creates a post with the given $title and $content in the
+   * database.]
+   * @param  string $title   The title of the post.
+   * @param  string $content The content of the post.
+   * @param  int    $adminId Optional, the id of the poster. this is needed if
+   *                         you provided an admins table name during blog
+   *                         installation.
+   * @return boolean         Returns the id of the newly created post in the
+   *                         database. Returns false if the post couldn't be
+   *                         created.
    */
   function createPost($title, $content, $adminId=null) {
     $data = array(
