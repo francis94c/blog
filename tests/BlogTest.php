@@ -15,6 +15,11 @@ class BlogTest {
     $ci->unit->run($ci->blogger->savePost(1), Blogger::CREATE, "Create Post Test.");
     $_POST["action"] = "createAndPublish";
     $ci->unit->run($ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH, "Create and Publish Post Test.");
+    $_POST["action"] = "save";
+    $_POST["id"] = 1;
+    $ci->unit->run($ci->blogger->savePost(1), Blogger::EDIT, "Edit Post.");
+    $_POST["action"] = "publish";
+    $ci->unit->run($ci->blogger->savePost(1), Blogger::PUBLISH, "Publish Post.");
   }
 }
 ?>
