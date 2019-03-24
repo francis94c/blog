@@ -11,6 +11,7 @@ class ModelTest {
     $ci->load->splint(self::PACKAGE, "*BlogManager", "bmanager");
     $postId = $ci->bmanager->createPost("Hello", "World", 1);
     $ci->unit->run($postId !== false, true, "Create Post");
+    $ci->unit->run((int) $ci->bmanager->getPostsCount(), 1, "Posts count check");
     $ci->unit->run(is_numeric($ci->bmanager->getPost($postId)["id"]), true, "ID Check");
     $ci->unit->run($ci->bmanager->getPost($postId)["title"], "Hello", "Title Check");
     $ci->unit->run((int) $ci->bmanager->getHits($postId), 2, "Hit count test.");
@@ -26,6 +27,7 @@ class ModelTest {
     $ci->unit->run($ci->bmanager->publishPost($postId, false), true, "Unpublish Post");
     $ci->unit->run((int) $ci->bmanager->getPost($postId)["published"], 0, "Publish Check");
     $postId = $ci->bmanager->createAndPublishPost("Hello", "World Peter", 1);
+    $ci->unit->run((int) $ci->bmanager->getPostsCount(), 2, "Posts count check");
     $ci->unit->run((int) $ci->bmanager->getPost($postId)["published"], 1, "Publish Check");
     $this->cleanUp($ci);
   }

@@ -9,7 +9,6 @@ class BlogTest {
     $ci->blogger->loadScripts();
     $ci->blogger->loadEditor("callback");
   }
-
   function createPostTest(&$ci) {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
     $ci->unit->run($ci->blogger->savePost(1), Blogger::CREATE, "Create Post Test.");
@@ -20,6 +19,10 @@ class BlogTest {
     $ci->unit->run($ci->blogger->savePost(1), Blogger::EDIT, "Edit Post.");
     $_POST["action"] = "publish";
     $ci->unit->run($ci->blogger->savePost(1), Blogger::PUBLISH, "Publish Post.");
+    $this->cleanUp($ci);
+  }
+  private function cleanUp(&$ci) {
+    $ci->db->empty_table("blogger_posts");
   }
 }
 ?>
