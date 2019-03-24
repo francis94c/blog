@@ -108,7 +108,7 @@ class BlogManager extends CI_Model {
     return $this->db->update("blogger_posts");
   }
   /**
-   * [getPostsCount description]
+   * [getPostsCount get the total number of posts in the database.]
    * @return [type] [description]
    */
   function getPostsCount() {
