@@ -107,5 +107,9 @@ class BlogManager extends CI_Model {
     $this->db->set("published", $publish ? 1 : 0);
     return $this->db->update("blogger_posts");
   }
+  function getPostsCount() {
+    $this->db->select("COUNT(title) as posts");
+    return $this->db->get("blogger_posts")->result()[0]->posts;
+  }
 }
 ?>
