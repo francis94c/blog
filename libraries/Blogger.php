@@ -117,7 +117,11 @@ class Blogger {
     if ($postId != null) $data["id"] = $postId;
     $this->ci->load->splint("francis94c/blog", "-post_edit", $data);
   }
-
+  /**
+   * [savePost description]
+   * @param  [type] $posterId [description]
+   * @return [type]           [description]
+   */
   function savePost($posterId=null) {
     if ($this->ci->input->post("action") == "save") {
       $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
