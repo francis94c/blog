@@ -127,9 +127,20 @@ class BlogManager extends CI_Model {
     $this->db->where("id", $postId);
     return $this->db->delete("blogger_posts");
   }
-  function searchPosts($words) {
+  /**
+   * [searchPosts description]
+   * @param  [type]  $words  [description]
+   * @param  [type]  $page   [description]
+   * @param  integer $limit  [description]
+   * @param  boolean $filter [description]
+   * @return [type]          [description]
+   */
+  function searchPosts($words, $page, $limit=0, $filter=false) {
+    if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
+    if ($filter) $this->db->where("published", 1);
     $this->db->like("title", $words);
     $this->db->or_like("content", $words);
+    return $this->db->get("blogger_posts")->result_array();
   }
 }
 ?>
