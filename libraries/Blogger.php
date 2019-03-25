@@ -79,15 +79,15 @@ class Blogger {
    * [setBlog description]
    * @param [type] $name [description]
    */
-  function setBlog($name) {
-    $this->$table_name = self::TABLE_PREFIX . "_" . $name;
+  function setName($name) {
+    $this->table_name = self::TABLE_PREFIX . "_" . $name;
   }
   /**
    * [getBlog description]
    * @return [type] [description]
    */
-  function getBlog() {
-    return $this->$table_name;
+  function getName() {
+    return $this->table_name;
   }
   /**
    * [loadHeaderScripts description]

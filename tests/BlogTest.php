@@ -10,6 +10,12 @@ class BlogTest {
     $ci->unit->run($ci->blogger->install("admins", "id", 1, ""), true, "Install Blog Database.");
     $ci->blogger->loadScripts();
     $ci->blogger->loadEditor("callback");
+    $this->cleanUp($ci);
+  }
+  function libTest(&$ci) {
+    $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
+    $ci->blogger->setName("test_name");
+    $ci->unit->run($ci->blogger->getName(), Blogger::TABLE_PREFIX . "_test_name", "Test Blogger setName()");
   }
   function createPostTest(&$ci) {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
