@@ -26,6 +26,8 @@ class Blogger {
     $this->ci->load->database();
     $this->table_name = self::TABLE_PREFIX . (isset($params["name"]) ? "_" . $params["name"] : "");
     $this->ci->load->database();
+    $this->ci->load->splint(self::PACKAGE, "*BlogManager", "bmanager");
+    $this->ci->bmanager->setBlogName(isset($params["name"]) ? $params["name"] : null);
   }
   /**
    * [install description]
@@ -81,6 +83,7 @@ class Blogger {
    */
   function setName($name) {
     $this->table_name = self::TABLE_PREFIX . "_" . $name;
+    $this->ci->bmanager->setBlogName($name != "" ? $name : null);
   }
   /**
    * [getBlog description]
@@ -116,7 +119,6 @@ class Blogger {
   }
 
   function savePost($posterId=null) {
-    $this->ci->load->splint(self::PACKAGE, "*BlogManager", "bmanager");
     if ($this->ci->input->post("action") == "save") {
       $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
       if ($id != "") {
@@ -143,6 +145,29 @@ class Blogger {
       return self::PUBLISH;
     }
     return false;
+  }
+  /**
+   * [getPostsCount description]
+   * @return [type] [description]
+   */
+  function getPostsCount() {
+    return $this->ci->bmanager->getPostsCount();
+  }
+  /**
+   * [getPost description]
+   * @param  [type] $postId [description]
+   * @return [type]         [description]
+   */
+  function getPost($postId) {
+    return $this->ci->bmanager->getPost($postId);
+  }
+  /**
+   * [getHits description]
+   * @param  [type] $postId [description]
+   * @return [type]         [description]
+   */
+  function getHits($postId) {
+    return $this->ci->bmanager->getHits($postId);
   }
 }
 ?>

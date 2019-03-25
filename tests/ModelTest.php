@@ -39,5 +39,7 @@ class ModelTest {
   }
   private function cleanUp(&$ci) {
     $ci->db->empty_table("blogger_posts");
+    $ci->db->empty_table("blogger_posts_test_name");
+    $ci->db->empty_table("blogger_posts_release_notes");
   }
 }

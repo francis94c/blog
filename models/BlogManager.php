@@ -3,6 +3,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class BlogManager extends CI_Model {
 
+  const TABLE_PREFIX = "blogger_posts";
+
+  private $table_name;
+
+  /**
+   * [setBlogName description]
+   * @param [type] $name [description]
+   */
+  function setBlogName($name) {
+    $this->table_name = self::TABLE_PREFIX . ($name != null ? "_" . $name : "");
+  }
+  /**
+   * [getBlogName description]
+   * @return [type] [description]
+   */
+  function getBlogName() {
+    return $this->table_name;
+  }
   /**
    * [createPost creates a post with the given $title and $content in the
    * database.]
@@ -21,7 +39,7 @@ class BlogManager extends CI_Model {
       "content" => $content
     );
     if ($adminId != null) $data["poster_id"] = $adminId;
-    if ($this->db->insert("blogger_posts", $data)) return $this->db->insert_id();
+    if ($this->db->insert($this->table_name, $data)) return $this->db->insert_id();
     return false;
   }
   /**
@@ -38,7 +56,7 @@ class BlogManager extends CI_Model {
       "published" => 1
     );
     if ($adminId != null) $data["poster_id"] = $adminId;
-    if ($this->db->insert("blogger_posts", $data)) return $this->db->insert_id();
+    if ($this->db->insert($this->table_name, $data)) return $this->db->insert_id();
     return false;
   }
   /**
@@ -53,7 +71,7 @@ class BlogManager extends CI_Model {
   function getPosts($page, $limit, $filter=false) {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
     if ($filter) $this->db->where("published", 1);
-    return $this->db->get("blogger_posts")->result_array();
+    return $this->db->get($this->table_name)->result_array();
   }
   /**
    * [savePost saves or midfies the content of a post record given by $postId
@@ -69,7 +87,7 @@ class BlogManager extends CI_Model {
       "content" => $content
     );
     $this->db->where("id", $postId);
-    return $this->db->update("blogger_posts", $data);
+    return $this->db->update($this->table_name, $data);
   }
   /**
    * [getPost Gets a specific post by the given value of $postId. NB: This will
@@ -79,11 +97,11 @@ class BlogManager extends CI_Model {
    */
   function getPost($postId) {
     $this->db->where("id", $postId);
-    $query = $this->db->get("blogger_posts");
+    $query = $this->db->get($this->table_name);
     if ($query->num_rows() > 0) {
       $this->db->where("id", $postId);
       $this->db->set("hits", "hits+1", FALSE);
-      $this->db->update("blogger_posts");
+      $this->db->update($this->table_name);
       return $query->result_array()[0];
     }
     return false;
@@ -95,7 +113,7 @@ class BlogManager extends CI_Model {
    */
   function getHits($postId) {
     $this->db->where("id", $postId);
-    $query = $this->db->get("blogger_posts");
+    $query = $this->db->get($this->table_name);
     if ($query->num_rows() > 0) return $query->result()[0]->hits;
     return 0;
   }
@@ -108,7 +126,7 @@ class BlogManager extends CI_Model {
   function publishPost($postId, $publish) {
     $this->db->where("id", $postId);
     $this->db->set("published", $publish ? 1 : 0);
-    return $this->db->update("blogger_posts");
+    return $this->db->update($this->table_name);
   }
   /**
    * [getPostsCount get the total number of posts in the database.]
@@ -116,7 +134,7 @@ class BlogManager extends CI_Model {
    */
   function getPostsCount() {
     $this->db->select("COUNT(title) as posts");
-    return $this->db->get("blogger_posts")->result()[0]->posts;
+    return $this->db->get($this->table_name)->result()[0]->posts;
   }
   /**
    * [deletePost description]
@@ -125,7 +143,7 @@ class BlogManager extends CI_Model {
    */
   function deletePost($postId) {
     $this->db->where("id", $postId);
-    return $this->db->delete("blogger_posts");
+    return $this->db->delete($this->table_name);
   }
   /**
    * [searchPosts description]
@@ -140,7 +158,7 @@ class BlogManager extends CI_Model {
     if ($filter) $this->db->where("published", 1);
     $this->db->like("title", $words);
     $this->db->or_like("content", $words);
-    return $this->db->get("blogger_posts")->result_array();
+    return $this->db->get($this->table_name)->result_array();
   }
 }
 ?>
