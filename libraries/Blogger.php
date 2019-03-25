@@ -173,5 +173,33 @@ class Blogger {
   function getHits($postId) {
     return $this->ci->bmanager->getHits($postId);
   }
+  /**
+   * [publishPost description]
+   * @param  [type] $postId  [description]
+   * @param  [type] $publish [description]
+   * @return [type]          [description]
+   */
+  function publishPost($postId, $publish) {
+    return $this->ci->bmanager->publishPost($postId, $publish);
+  }
+  /**
+   * [deletePost description]
+   * @param  [type] $postId [description]
+   * @return [type]         [description]
+   */
+  function deletePost($postId) {
+    return $this->ci->bmanager->deletePost($postId);
+  }
+  /**
+   * [searchPosts description]
+   * @param  [type]  $words  [description]
+   * @param  [type]  $page   [description]
+   * @param  integer $limit  [description]
+   * @param  boolean $filter [description]
+   * @return [type]          [description]
+   */
+  function searchPosts($words, $page, $limit=0, $filter=false) {
+    return $this->ci->bmanager->searchPosts($words, $page, $limit, $filter);
+  }
 }
 ?>
