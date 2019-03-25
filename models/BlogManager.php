@@ -44,12 +44,15 @@ class BlogManager extends CI_Model {
   /**
    * [getPosts get posts from the database by the given $page starting from the
    * value of 1 and returns $limit number of rows.]
-   * @param  int   $page  Page number starting from 1.
-   * @param  int   $limit Number of posts to return.
+   * @param  int     $page   Page number starting from 1.
+   * @param  int     $limit  Number of posts to return.
+   * @param  boolean $filter if true, returns only published posts, if false
+   *                         return all posts. false by default.
    * @return array Array of posts for a given page.
    */
-  function getPosts($page, $limit) {
+  function getPosts($page, $limit, $filter=false) {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
+    if ($filter) $this->db->where("published", 1);
     return $this->db->get("blogger_posts")->result_array();
   }
   /**
@@ -114,6 +117,15 @@ class BlogManager extends CI_Model {
   function getPostsCount() {
     $this->db->select("COUNT(title) as posts");
     return $this->db->get("blogger_posts")->result()[0]->posts;
+  }
+  /**
+   * [deletePost description]
+   * @param  [type] $postId [description]
+   * @return [type]         [description]
+   */
+  function deletePost($postId) {
+    $this->db->where("id", $postId);
+    return $this->db->delete("blogger_posts");
   }
 }
 ?>
