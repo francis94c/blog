@@ -6,6 +6,8 @@ class BlogTest {
   function uiTest(&$ci) {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
     $ci->unit->run($ci->blogger->install("admins", "id", 1), true, "Install Blog Database.");
+    $ci->unit->run($ci->blogger->install("admins", "id", 1, "release_notes"), true, "Install Relese Notes Blog Database.");
+    $ci->unit->run($ci->blogger->install("admins", "id", 1, ""), true, "Install Blog Database.");
     $ci->blogger->loadScripts();
     $ci->blogger->loadEditor("callback");
   }

@@ -3,11 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Blogger {
 
-  private $db;
-
   private $ci;
 
   private $dbforge;
+
+  private $table_name;
+
+  const TABLE_PREFIX = "blogger_posts";
 
   const PACKAGE = "francis94c/blog";
 
@@ -19,15 +21,11 @@ class Blogger {
 
   const PUBLISH = "publish";
 
-  function __construct() {
-    if (func_num_args() > 0) $params = func_get_arg(0);
+  function __construct($params=null) {
     $this->ci =& get_instance();
     $this->ci->load->database();
-    //$this->ci->load->splint("francis94c/ci-preference", "+CIPreferences", array(
-    //  "file_name" => "blogger_config.json"
-    //), "prefs");
+    $this->table_name = self::TABLE_PREFIX . (isset($params["name"]) ? "_" . $params["name"] : "");
     $this->ci->load->database();
-    $this->db =& $this->ci->db;
   }
   /**
    * [install description]
@@ -36,7 +34,8 @@ class Blogger {
    * @param  [type] $adminIdColumnConstraint [description]
    * @return [type]                          [description]
    */
-  function install($adminTableName = null, $adminIdColumnName = null, $adminIdColumnConstraint = null) {
+  function install($adminTableName = null, $adminIdColumnName = null, $adminIdColumnConstraint = null, $blogName=null) {
+    $blogName = $blogName == null ? $this->table_name : self::TABLE_PREFIX . "_" . $blogName;
     $this->ci->load->dbforge();
     $this->ci->dbforge->add_field("id");
     $fields = array(
@@ -73,8 +72,22 @@ class Blogger {
         "FOREIGN KEY (poster_id) REFERENCES $adminTableName($adminIdColumnName)");
     }
     $attributes = array('ENGINE' => 'InnoDB');
-    if (!$this->ci->dbforge->create_table("blogger_posts", true, $attributes)) return false;
+    if (!$this->ci->dbforge->create_table($blogName, true, $attributes)) return false;
     return true;
+  }
+  /**
+   * [setBlog description]
+   * @param [type] $name [description]
+   */
+  function setBlog($name) {
+    $this->$table_name = self::TABLE_PREFIX . "_" . $name;
+  }
+  /**
+   * [getBlog description]
+   * @return [type] [description]
+   */
+  function getBlog() {
+    return $this->$table_name;
   }
   /**
    * [loadHeaderScripts description]
