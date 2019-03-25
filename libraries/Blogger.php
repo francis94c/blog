@@ -94,7 +94,7 @@ class Blogger {
    * @param  boolean $w3css [description]
    * @return [type]         [description]
    */
-  function loadScripts($w3css=true) {
+  private function loadScripts($w3css) {
     $this->ci->load->splint("francis94c/blog", "-header_scripts", array(
       "w3css" => $w3css
     ));
@@ -103,7 +103,8 @@ class Blogger {
    * [loadCreateView description]
    * @return [type] [description]
    */
-  function loadEditor($callback, $postId=null) {
+  function loadEditor($callback, $postId=null, $w3css=true) {
+    $this->loadScripts($w3css);
     $this->ci->load->helper("form");
     $data = array(
       "callback" => "Admin/token",

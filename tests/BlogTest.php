@@ -8,7 +8,6 @@ class BlogTest {
     $ci->unit->run($ci->blogger->install("admins", "id", 1), true, "Install Blog Database.");
     $ci->unit->run($ci->blogger->install("admins", "id", 1, "release_notes"), true, "Install Relese Notes Blog Database.");
     $ci->unit->run($ci->blogger->install("admins", "id", 1, ""), true, "Install Blog Database.");
-    $ci->blogger->loadScripts();
     $ci->blogger->loadEditor("callback");
     $this->cleanUp($ci);
   }
