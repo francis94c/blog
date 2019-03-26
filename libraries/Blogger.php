@@ -104,8 +104,11 @@ class Blogger {
     ));
   }
   /**
-   * [loadCreateView description]
-   * @return [type] [description]
+   * [loadEditor description]
+   * @param  [type]  $callback [description]
+   * @param  [type]  $postId   [description]
+   * @param  boolean $w3css    [description]
+   * @return [type]            [description]
    */
   function loadEditor($callback, $postId=null, $w3css=true) {
     $this->loadScripts($w3css);
