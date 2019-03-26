@@ -36,7 +36,7 @@ class Blogger {
    * @param  [type] $adminIdColumnConstraint [description]
    * @return [type]                          [description]
    */
-  function install($adminTableName = null, $adminIdColumnName = null, $adminIdColumnConstraint = null, $blogName=null) {
+  function install($blogName=null, $adminTableName = null, $adminIdColumnName = null, $adminIdColumnConstraint = null) {
     $blogName = $blogName == null ? $this->table_name : self::TABLE_PREFIX . "_" . $blogName;
     $this->ci->load->dbforge();
     $this->ci->dbforge->add_field("id");

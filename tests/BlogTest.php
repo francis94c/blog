@@ -6,15 +6,14 @@ class BlogTest {
   function uiTest(&$ci) {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
     $ci->unit->run($ci->blogger->install("admins", "id", 1), true, "Install Blog Database.");
-    $ci->unit->run($ci->blogger->install("admins", "id", 1, "release_notes"), true, "Install Relese Notes Blog Database.");
-    $ci->unit->run($ci->blogger->install("admins", "id", 1, ""), true, "Install Blog Database.");
-    $ci->unit->run($ci->blogger->install("admins", "id", 1, "test_name"), true, "Install Test Blog Database.");
+    $ci->unit->run($ci->blogger->install("release_notes", "admins", "id", 1), true, "Install Relese Notes Blog Database.");
+    $ci->unit->run($ci->blogger->install("", "admins", "id", 1), true, "Install Blog Database.");
+    $ci->unit->run($ci->blogger->install("test_name", "admins", "id", 1), true, "Install Test Blog Database.");
     $ci->blogger->loadEditor("callback");
     $this->cleanUp($ci);
   }
   function libTest(&$ci) {
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
-
     $ci->blogger->setName("test_name");
     $ci->unit->run($ci->blogger->getName(), Blogger::TABLE_PREFIX . "_test_name", "Test Blogger setName()");
   }
