@@ -32,6 +32,7 @@ class Blogger {
   /**
    * [install description]
    * @param  [type] $adminTableName          [description]
+   * @param  [type] $adminTableName          [description]
    * @param  [type] $adminIdColumnName       [description]
    * @param  [type] $adminIdColumnConstraint [description]
    * @return [type]                          [description]
