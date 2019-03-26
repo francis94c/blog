@@ -22,7 +22,8 @@ You can manage multiple blogs with the library. To use another blog, you must ha
    * install [creates a table for a given blog name]
    * @param  [type] $blogName                The name of the blog
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-   * @param  [type] $adminTableName          the name of the table containing admins (this is required if you have an admins section and you wan to keep track of who        * creates/edits what). This is basically used to add a foreign key constraint on the blog table's column of admin if provided.
+   * @param  [type] $adminTableName          the name of the table containing admins (this is required if you have an admins section and you wan to keep track of who 
+   *                                         creates/edits what). This is basically used to add a foreign key constraint on the blog table's column of admin if provided.
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
    * @param  [type] $adminIdColumnName       The name of the column in the given admin table that has the  id of each admin. this is usuall an AUTO_INCREMENT filed          *                                         called 'id'.
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
