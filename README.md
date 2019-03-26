@@ -20,6 +20,7 @@ You can manage multiple blogs with the library. To use another blog, you must ha
 ```php
 /**
    * install [creates a table for a given blog name]
+   * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
    * @param  string $blogName                The name of the blog
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
    * @param  string $adminTableName          the name of the table containing admins (this is required if you have an admins section and you wan to keep track of who 
@@ -33,14 +34,34 @@ You can manage multiple blogs with the library. To use another blog, you must ha
    * @return bool                            true if successfull, false if not.
 */
 
-$this->blogger->install("blog_name", "an_admin_table_name", "the_admin_column_name", "the_admin_column_constraint");
+$this->blogger->install([$blogName], [$adminTableName], [$adminColumnName], [$adminIdColumnConstraint]);
 
 // All parameters are optional.
 
 // If no blog name is given, it attempts to create a table called 'blogger_posts' by default.
 ```
 
+To load the post editor, call the ```loadEditor()``` method.
 
+```php
+/**
+   * loadEditor [loads a markdown editor.]
+   * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   * @param  string  $callback the URI (controller/method combination) the editor form will be submitted to when any of the buttons 'Create, Save, Save and Publish' is 
+   *                           clicked. e.g 'MyBlog/savePost' for the controller 'MyBlog' with a 'savePost' function.
+   * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   * @param  int     $postId   the id if a post to edit.
+   * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   * @return null
+*/
+$this->blogger->loadEditor($callback, [$postId]); // $postId is optional, not pasing this argument means you want to create a new post.
+```
+
+The controller function specified by the ```$callback``` must call the library's ```savePost()``` function in order to commit every change to the database.
+
+```php
+$this->blogger->savePost([$adminId]); // $adminId is optional. However, you must supply this value if you installed the current blog with an admin table name and id.
+```
 
 ### Wiki ###
 
