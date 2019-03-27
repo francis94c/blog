@@ -1,7 +1,7 @@
 {
   "name": "francis94c/blog",
   "type": "library",
-  "description": "A library for managing article like contents like blogs, release notes, etc.",
+  "description": "A blog library for Code Igniter. manages article like contents like blogs, release notes, etc.",
   "tags": ["preference"],
   "page": "https://github.com/francis94c/blog",
   "authors": [
