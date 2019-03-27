@@ -74,7 +74,7 @@ class BlogManager extends CI_Model {
     if ($hits) {
       $this->db->order_by("hits", "DESC");
     } else {
-      $this->db->order_by("id", "DESC");  
+      $this->db->order_by("id", "DESC");
     }
     return $this->db->get($this->table_name)->result_array();
   }

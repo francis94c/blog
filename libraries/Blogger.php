@@ -155,6 +155,35 @@ class Blogger {
     return false;
   }
   /**
+   * [getPosts get posts from the database by the given $page starting from the
+   * value of 1 and returns $limit number of rows.]
+   * @param  int     $page   Page number starting from 1.
+   * @param  int     $limit  Number of posts to return.
+   * @param  boolean $filter if true, returns only published posts, if false
+   *                         return all posts. false by default.
+   * @return array Array of posts for a given page.
+   */
+  function getPosts($page, $limit, $filter=false, $hits=false) {
+    return $this->ci->bmanager->getPosts($page, $limit, $filter, $hits);
+  }
+  /**
+   * [renderPosts description]
+   * @param  [type]  $view       [description]
+   * @param  [type]  $empty_view [description]
+   * @param  [type]  $page       [description]
+   * @param  [type]  $limit      [description]
+   * @param  boolean $filter     [description]
+   * @param  boolean $hits       [description]
+   * @return [type]              [description]
+   */
+  function renderPosts($view, $empty_view, $page, $limit, $filter=false, $hits=false) {
+    $posts = $this->getPosts($page, $limit, $filter, $hits);
+    if (count($posts) == 0) { $this->ci->load->view($empty_view); return; }
+    foreach ($posts as $post) {
+      $this->ci->load->view($view, $post);
+    }
+  }
+  /**
    * [getPostsCount description]
    * @return [type] [description]
    */
