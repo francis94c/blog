@@ -22,6 +22,12 @@ class ModelTest {
     $ci->unit->run((int) $ci->bmanager->getHits($postId), 4, "Hit count test.");
     $ci->unit->run($ci->bmanager->getPost($postId)["content"], "Hello Content", "Content Check");
     $ci->unit->run((int) $ci->bmanager->getHits($postId), 5, "Hit count test.");
+    $ci->config->set_item("blogger_hits", false);
+    $ci->bmanager->getPost($postId);
+    $ci->unit->run((int) $ci->bmanager->getHits($postId), 5, "Hit count test.");
+    $ci->config->set_item("blogger_hits", true);
+    $ci->bmanager->getPost($postId);
+    $ci->unit->run((int) $ci->bmanager->getHits($postId), 6, "Hit count test.");
     $ci->unit->run(count($ci->bmanager->getPosts(1, 5, true)), 0, "Published count.");
     $ci->unit->run(count($ci->bmanager->getPosts(1, 0, true)), 0, "Published count.");
     $ci->unit->run($ci->bmanager->publishPost($postId, true), true, "Publish Post.");

@@ -5,8 +5,15 @@ class BlogManager extends CI_Model {
 
   const TABLE_PREFIX = "blogger_posts";
 
+  private $ci;
+
   private $table_name;
 
+  function __construct() {
+    parent::__construct();
+    $this->ci =& get_instance();
+    $this->ci->load->database();
+  }
   /**
    * [setBlogName description]
    * @param [type] $name [description]
@@ -104,9 +111,12 @@ class BlogManager extends CI_Model {
     $this->db->where("id", $postId);
     $query = $this->db->get($this->table_name);
     if ($query->num_rows() > 0) {
-      $this->db->where("id", $postId);
-      $this->db->set("hits", "hits+1", FALSE);
-      $this->db->update($this->table_name);
+      if ($this->ci->config->item("blogger_hits") === null ||
+      $this->ci->config->item("blogger_hits") === true) {
+        $this->db->where("id", $postId);
+        $this->db->set("hits", "hits+1", FALSE);
+        $this->db->update($this->table_name);
+      }
       return $query->result_array()[0];
     }
     return false;
