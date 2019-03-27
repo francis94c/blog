@@ -104,6 +104,13 @@ class Blogger {
     ));
   }
   /**
+   * [w3css description]
+   * @return [type] [description]
+   */
+  function w3css() {
+    return "<link rel=\"stylesheet\" href=\"https://www.w3schools.com/w3css/4/w3.css\">";
+  }
+  /**
    * [loadEditor description]
    * @param  [type]  $callback [description]
    * @param  [type]  $postId   [description]
