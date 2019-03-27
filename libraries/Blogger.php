@@ -111,6 +111,13 @@ class Blogger {
     return "<link rel=\"stylesheet\" href=\"https://www.w3schools.com/w3css/4/w3.css\">";
   }
   /**
+   * [fontsAwesome description]
+   * @return [type] [description]
+   */
+  function fontsAwesome() {
+    return "<link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.3.1/css/all.css\"";
+  }
+  /**
    * [loadEditor description]
    * @param  [type]  $callback [description]
    * @param  [type]  $postId   [description]
@@ -183,11 +190,21 @@ class Blogger {
    * @param  boolean $hits       [description]
    * @return [type]              [description]
    */
-  function renderPosts($view, $empty_view, $page, $limit, $filter=false, $hits=false) {
+  function renderPostItems($view=null, $callback = null, $empty_view=null, $page, $limit, $filter=false, $hits=false) {
+    if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blogger", $blogger);
     $posts = $this->getPosts($page, $limit, $filter, $hits);
-    if (count($posts) == 0) { $this->ci->load->view($empty_view); return; }
+    if (count($posts) == 0) {
+      if ($empty_view == null) { $blogger->load->view("empty"); } else {
+        $this->ci->load->view($empty_view);
+        return;
+      }
+    }
     foreach ($posts as $post) {
-      $this->ci->load->view($view, $post);
+      $post["callback"] = $callback != null ? $callback : "";
+      $post["filter"] = $filter;
+      if ($view == null) {$blogger->load->view("post", $post); } else {
+        $this->ci->load->view($view, $post);
+      }
     }
   }
   /**
