@@ -71,6 +71,7 @@ class BlogManager extends CI_Model {
   function getPosts($page, $limit, $filter=false) {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
     if ($filter) $this->db->where("published", 1);
+    $this->db->order_by("id", "DESC");
     return $this->db->get($this->table_name)->result_array();
   }
   /**
