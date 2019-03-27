@@ -28,6 +28,7 @@ class Blogger {
     $this->ci->load->database();
     $this->ci->load->splint(self::PACKAGE, "*BlogManager", "bmanager");
     $this->ci->bmanager->setBlogName(isset($params["name"]) ? $params["name"] : null);
+    $this->ci->load->helper("url");
   }
   /**
    * [install description]
@@ -191,7 +192,7 @@ class Blogger {
    * @return [type]              [description]
    */
   function renderPostItems($view=null, $callback = null, $empty_view=null, $page, $limit, $filter=false, $hits=false) {
-    if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blogger", $blogger);
+    if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blog", $blogger);
     $posts = $this->getPosts($page, $limit, $filter, $hits);
     if (count($posts) == 0) {
       if ($empty_view == null) { $blogger->load->view("empty"); } else {

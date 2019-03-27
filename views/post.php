@@ -1,4 +1,4 @@
-<a href="<?=site_url($callback)?>" style="text-decoration:none;">
+<a href="<?=$callback == null || $callback == "" ? "" : site_url($callback)?>" style="text-decoration:none;">
   <div class="w3-container w3-card w3-round w3-margin w3-padding w3-animate-opacity">
     <h1><?=$title?></h1>
     <div class="w3-border w3-padding w3-round">
@@ -11,7 +11,7 @@
           <i class="fa fa-stop"></i>
         </span>
         <?php }?>
-        <?=$published == 1 ? "Published " : "Created "?><?=$date_time?>
+        <?=$published == 1 ? "Published " : "Created "?><?=$published == 1 ? $date_published : $date_created?>
       </p>
     </div>
   </div>
