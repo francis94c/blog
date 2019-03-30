@@ -130,10 +130,15 @@ class Blogger {
     $this->ci->load->helper("form");
     $data = array(
       "callback" => "Admin/token",
-      "type"     => "create",
+      "type"     => $postId == null ? "create" : "edit",
       "callback" => $callback
     );
-    if ($postId != null) $data["id"] = $postId;
+    if ($postId != null) {
+      $data["id"] = $postId;
+      $post = $this->getPost($postId, false);
+      $data["title"] = $post["title"];
+      $data["content"] = $post["content"];
+    }
     $this->ci->load->splint("francis94c/blog", "-post_edit", $data);
   }
   /**
@@ -220,8 +225,8 @@ class Blogger {
    * @param  [type] $postId [description]
    * @return [type]         [description]
    */
-  function getPost($postId) {
-    return $this->ci->bmanager->getPost($postId);
+  function getPost($postId, $hit=true) {
+    return $this->ci->bmanager->getPost($postId, $hit);
   }
   /**
    * [getHits description]
