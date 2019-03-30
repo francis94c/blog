@@ -107,15 +107,17 @@ class BlogManager extends CI_Model {
    * @param  int   $postId ID of the post to retrieve.
    * @return array An associative array for the Posts's data.
    */
-  function getPost($postId) {
+  function getPost($postId, $hit=true) {
     $this->db->where("id", $postId);
     $query = $this->db->get($this->table_name);
     if ($query->num_rows() > 0) {
-      if ($this->ci->config->item("blogger_hits") === null ||
-      $this->ci->config->item("blogger_hits") === true) {
-        $this->db->where("id", $postId);
-        $this->db->set("hits", "hits+1", FALSE);
-        $this->db->update($this->table_name);
+      if ($hit) {
+        if ($this->ci->config->item("blogger_hits") === null ||
+        $this->ci->config->item("blogger_hits") === true) {
+          $this->db->where("id", $postId);
+          $this->db->set("hits", "hits+1", FALSE);
+          $this->db->update($this->table_name);
+        }
       }
       $post =  $query->result_array()[0];
       $images = array();
