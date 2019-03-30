@@ -51,7 +51,7 @@ simpleMDE.value(document.getElementById("content").innerHTML);
 //simpleMDE.value(markdown);
 
 function save() {
-  document.getElementById("action").value = <?=$type == "edit" ? "\"save\"" : "\"create\"";?>;
+  document.getElementById("action").value = "save";
   document.getElementById("postForm").submit();
 }
 
