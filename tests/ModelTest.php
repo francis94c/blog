@@ -41,6 +41,12 @@ class ModelTest {
     $ci->unit->run((int) $ci->bmanager->getPost($postId)["published"], 1, "Publish Check");
     $ci->unit->run(count($ci->bmanager->searchPosts("Hello", 1, 5)), 2, "Search Count");
     $ci->unit->run(count($ci->bmanager->searchPosts("Peter", 1, 5)), 1, "Search Count");
+    $ci->unit->run(isset($ci->bmanager->getPost($postId)["share_image"]), false, "Share Image Test");
+    $postId = $ci->bmanager->createAndPublishPost("Hello",
+    "World Peter <img class=\"w3-image\" src=\"http://a/link/to/image/1.png\" alt=\"Title\"/> <img class=\"w3-image\" src=\"http://a/link/to/image/2.png\" alt=\"Title\"/> <img class=\"w3-image\" src=\"http://a/link/to/image/3.png\" alt=\"Title\"/>", 1);
+    $ci->unit->run(isset($ci->bmanager->getPost($postId)["share_image"]), true, "Share Image Test");
+    $post = $ci->bmanager->getPost($postId);
+    $ci->unit->run($post["share_image"], "http://a/link/to/image/1.png", "Share Image Link Test");
     $this->cleanUp($ci);
   }
   private function cleanUp(&$ci) {

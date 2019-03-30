@@ -117,7 +117,18 @@ class BlogManager extends CI_Model {
         $this->db->set("hits", "hits+1", FALSE);
         $this->db->update($this->table_name);
       }
-      return $query->result_array()[0];
+      $post =  $query->result_array()[0];
+      $images = array();
+      // Fetch all images in post.
+      preg_match("/<img\s[^>]*?src\s*=\s*['\"]([^'\"]*?)['\"][^>]*?>/", $post["content"], $images);
+      $share_image = count($images) == 0 ? null : $images[0];
+      unset($images);
+      $src = array();
+      // Get the contents of the src tag.
+      preg_match("/(http|https):\/\/[a-zA-Z0-9-._\/]+/", $share_image, $src);
+      if (count($src) == 0) return $post;
+      $post["share_image"] = $src[0];
+      return $post;
     }
     return false;
   }
