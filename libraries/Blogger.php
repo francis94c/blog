@@ -13,6 +13,8 @@ class Blogger {
 
   const PACKAGE = "francis94c/blog";
 
+  const MARKDOWN_PACKAGE = "francis94c/ci-parsedown";
+
   const CREATE = "create";
 
   const CREATE_AND_PUBLISH = "createAndPublish";
@@ -27,6 +29,7 @@ class Blogger {
     $this->table_name = self::TABLE_PREFIX . (isset($params["name"]) ? "_" . $params["name"] : "");
     $this->ci->load->database();
     $this->ci->load->splint(self::PACKAGE, "*BlogManager", "bmanager");
+    $this->ci->load->splint(self::MARKDOWN_PACKAGE, "+Parsedown", null, "parsedown");
     $this->ci->bmanager->setBlogName(isset($params["name"]) ? $params["name"] : null);
     $this->ci->load->helper("url");
   }
@@ -213,7 +216,8 @@ class Blogger {
     foreach ($posts as $post) {
       $post["callback"] = $callback != null ? $callback : "";
       $post["filter"] = $filter;
-      if ($view == null) {$blogger->load->view("post", $post); } else {
+      $post["content"] = $this->ci->parsedown->text($post["content"]);
+      if ($view == null) {$blogger->load->view("post_item", $post); } else {
         $this->ci->load->view($view, $post);
       }
     }

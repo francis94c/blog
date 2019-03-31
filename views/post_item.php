@@ -1,4 +1,4 @@
-<a href="<?=$callback == null || $callback == "" ? "" : site_url($callback)?>" style="text-decoration:none;">
+<a href="<?=$callback == null || $callback == "" ? "" : site_url($callback)?>" style="text-decoration:none;color:black;">
   <div class="w3-container w3-card w3-round w3-margin w3-padding w3-animate-opacity">
     <h1><?=$title?></h1>
     <div class="w3-border w3-padding w3-round">
