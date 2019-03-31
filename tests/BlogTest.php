@@ -16,6 +16,9 @@ class BlogTest {
     $ci->blogger->renderPostItems(null, null, null, 1, 0);
     $ci->blogger->renderPostItems(null, null, "welcome_message", 1, 0);
     $ci->blogger->savePost(1);
+    $ci->blogger->renderPost("Hello", null);
+    $ci->blogger->renderPost("Hello", null);
+    $ci->blogger->renderPost("Hello", "welcome_message");
     $_POST["title"] .= "1E";
     $ci->blogger->savePost(1);
     $_POST["title"] .= "1ETY";

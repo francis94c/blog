@@ -217,9 +217,18 @@ class Blogger {
       $post["callback"] = $callback != null ? $callback : "";
       $post["filter"] = $filter;
       $post["content"] = $this->ci->parsedown->text($post["content"]);
-      if ($view == null) {$blogger->load->view("post_item", $post); } else {
+      if ($view == null) {$blogger->load->view("post_list_item", $post); } else {
         $this->ci->load->view($view, $post);
       }
+    }
+  }
+  function renderPost($postId, $view=null) {
+    $post = $this->ci->bmanager->getPost($postId);
+    $post["content"] = $this->ci->parsedown->text($post["content"]);
+    if ($view == null) {
+      $this->ci->load->splint("francis94c/blog", "-post_item", $post);
+    } else {
+      $this->ci->load->view($view, $post);
     }
   }
   /**
