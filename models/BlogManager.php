@@ -43,8 +43,10 @@ class BlogManager extends CI_Model {
   function createPost($title, $content, $adminId=null) {
     $data = array(
       "title"   => $title,
-      "content" => $content
+      "content" => $content,
+      "slug"    => url_title($title)
     );
+    if (is_numeric($title)) $data["slug"] = "_" . $data["slug"];
     if ($adminId != null) $data["poster_id"] = $adminId;
     if ($this->db->insert($this->table_name, $data)) return $this->db->insert_id();
     return false;
@@ -60,8 +62,10 @@ class BlogManager extends CI_Model {
     $data = array(
       "title"     => $title,
       "content"   => $content,
+      "slug"      => url_title($title),
       "published" => 1
     );
+    if (is_numeric($title)) $data["slug"] = "_" . $data["slug"];
     if ($adminId != null) $data["poster_id"] = $adminId;
     if ($this->db->insert($this->table_name, $data)) return $this->db->insert_id();
     return false;
@@ -108,7 +112,11 @@ class BlogManager extends CI_Model {
    * @return array An associative array for the Posts's data.
    */
   function getPost($postId, $hit=true) {
-    $this->db->where("id", $postId);
+    if (is_numeric($postId)) {
+      $this->db->where("id", $postId);
+    } else {
+      $this->db->where("slug", $postId);
+    }
     $query = $this->db->get($this->table_name);
     if ($query->num_rows() > 0) {
       if ($hit) {

@@ -61,6 +61,11 @@ class Blogger {
         "type"       => "INT",
         "constraint" => 7,
         "default"    => 0
+      ),
+      "slug"      => array(
+        "type"       => "VARCHAR",
+        "constraint" => 80,
+        "unique"     => true
       )
     );
     $constrain = $adminTableName !== null && $adminIdColumnName !== null &&

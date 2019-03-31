@@ -4,5 +4,5 @@
 CREATE TABLE IF NOT EXISTS blogger_posts (id INT(7) AUTO_INCREMENT PRIMARY KEY, title
 VARCHAR(70) NOT NULL, content TEXT NOT NULL, date_created TIMESTAMP DEFAULT
 CURRENT_TIMESTAMP, date_published TIMESTAMP, published TINYINT DEFAULT 0,
-poster_id INT(1) NOT NULL, hits INT(7) DEFAULT 0, FOREIGN KEY (poster_id)
-REFERENCES a_1_a(id)) Engine=InnoDB;
+poster_id INT(1) NOT NULL, hits INT(7) DEFAULT 0, slug VARCHAR(80) NOT NULL,
+FOREIGN KEY (poster_id) REFERENCES a_1_a(id)) Engine=InnoDB;
