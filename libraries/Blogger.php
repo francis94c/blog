@@ -108,7 +108,7 @@ class Blogger {
    * @return [type]         [description]
    */
   private function loadScripts($w3css) {
-    $this->ci->load->splint("francis94c/blog", "-header_scripts", array(
+    $this->ci->load->splint(self::PACKAGE, "-header_scripts", array(
       "w3css" => $w3css
     ));
   }
@@ -222,14 +222,33 @@ class Blogger {
       }
     }
   }
-  function renderPost($postId, $view=null) {
-    $post = $this->ci->bmanager->getPost($postId);
+  /**
+   * [renderPost description]
+   * @param  [type] $post [description]
+   * @param  [type] $view [description]
+   * @return [type]       [description]
+   */
+  function renderPost($post, $view=null) {
+    if (!is_array($post)) $post = $this->ci->bmanager->getPost($post);
     $post["content"] = $this->ci->parsedown->text($post["content"]);
     if ($view == null) {
       $this->ci->load->splint("francis94c/blog", "-post_item", $post);
     } else {
       $this->ci->load->view($view, $post);
     }
+  }
+  /**
+   * [metaOg description]
+   * @param  [type] $post [description]
+   * @return [type]       [description]
+   */
+  function metaOg($post) {
+    $data = array();
+    $data["title"] = $post["title"];
+    $data["description"] = substr($post["content"], 0, 154);
+    if (isset($post["share_image"])) $data["image_link"] = $post["share_image"];
+    $data["url"] = current_url();
+    return $this->ci->load->splint(self::PACKAGE, "-meta_og", $data, true);
   }
   /**
    * [getPostsCount description]

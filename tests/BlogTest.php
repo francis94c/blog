@@ -19,6 +19,7 @@ class BlogTest {
     $ci->blogger->renderPost("Hello", null);
     $ci->blogger->renderPost("Hello", null);
     $ci->blogger->renderPost("Hello", "welcome_message");
+    echo $ci->blogger->metaOg($ci->blogger->getPost("Hello", false));
     $_POST["title"] .= "1E";
     $ci->blogger->savePost(1);
     $_POST["title"] .= "1ETY";
