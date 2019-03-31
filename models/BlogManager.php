@@ -60,10 +60,11 @@ class BlogManager extends CI_Model {
    */
   function createAndPublishPost($title, $content, $adminId=null) {
     $data = array(
-      "title"     => $title,
-      "content"   => $content,
-      "slug"      => url_title($title),
-      "published" => 1
+      "title"          => $title,
+      "content"        => $content,
+      "slug"           => url_title($title),
+      "published"      => 1,
+      "date_published" => date("Y-m-d H:i:s")
     );
     if (is_numeric($title)) $data["slug"] = "_" . $data["slug"];
     if ($adminId != null) $data["poster_id"] = $adminId;
@@ -162,6 +163,7 @@ class BlogManager extends CI_Model {
   function publishPost($postId, $publish) {
     $this->db->where("id", $postId);
     $this->db->set("published", $publish ? 1 : 0);
+    $this->db->set("date_published", date("Y-m-d H:i:s"));
     return $this->db->update($this->table_name);
   }
   /**
