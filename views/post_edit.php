@@ -26,13 +26,13 @@ if (!isset($prompt_color)) $prompt_color = "w3-green";
       <span onclick="document.getElementById('deleteModal').style.display = 'none'" class="w3-button w3-hover-blue w3-display-topright">
         <i class="fa fa-times"></i>
       </span>
-      <h2>Publish?</h2>
+      <h2>Delete?</h2>
     </header>
     <div class="w3-container">
       <p>Are you sure you want to delete this content?</p>
       <div class="w3-right">
         <button onclick="document.getElementById('deleteModal').style.display = 'none'" class="w3-margin w3-button w3-hover-blue w3-green">No</button>
-        <button onclick="document.getElementById('deleteModal').style.display = 'none';delete();" class="w3-margin w3-button w3-hover-blue w3-red">Yes</button>
+        <button onclick="document.getElementById('deleteModal').style.display = 'none';deletePost();" class="w3-margin w3-button w3-hover-blue w3-red">Yes</button>
       </div>
     </div>
   </div>
@@ -89,11 +89,20 @@ function saveAndPublish() {
 function promptPublish() {
   document.getElementById("publishModal").style.display = "block";
 }
+/**
+ * [promptDelete description]
+ * @return [type] [description]
+ */
 function promptDelete() {
-
+  document.getElementById("deleteModal").style.display = "block";
 }
-function delete() {
-  
+/**
+ * [delete description]
+ * @return [type] [description]
+ */
+function deletePost() {
+  document.getElementById("action").value = "delete";
+  document.getElementById("postForm").submit();
 }
 </script>
 <input type="hidden" name="id" value="<?=$type == "edit" ? $id : ""?>"/>
