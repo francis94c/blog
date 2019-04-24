@@ -62,7 +62,7 @@ var simpleMDE = new SimpleMDE(
     element: document.getElementById("edi")
   }
 );
-simpleMDE.value(document.getElementById("content").innerHTML);
+simpleMDE.value(document.getElementById("content").innerHTML.trim());
 //var markdown = simpleMDE.value();
 //markdown = markdown.replace(/    /g, "  \r\n");
 //simpleMDE.value(markdown);
