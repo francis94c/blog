@@ -23,6 +23,8 @@ class Blogger {
 
   const PUBLISH = "publish";
 
+  const ABORT = "abortAction";
+
   function __construct($params=null) {
     $this->ci =& get_instance();
     $this->ci->load->database();
@@ -155,30 +157,28 @@ class Blogger {
    * @return [type]           [description]
    */
   function savePost($posterId=null) {
-    if ($this->ci->input->post("action") == "save") {
+    $action = $this->ci->security->xss_clean($this->ci->input->post("action"));
+    if ($action == "save") {
       $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
       if ($id != "") {
         $this->ci->bmanager->savePost($this->ci->input->post("id"), $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
+        return self::EDIT;
       } else {
         $this->ci->bmanager->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
+        return self::CREATE;
       }
     }
-    if ($this->ci->input->post("action") == "publish" || $this->ci->input->post("action") == "createAndPublish") {
-      $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
-      if ($id != "") {
+    if ($action == "publish" || $action == "createAndPublish") {
+      if ($action == "publish") {
+        $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
+        if ($id == "") return self::ABORT;
+        $this->ci->bmanager->savePost($id, $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
         $this->ci->bmanager->publishPost($id, $posterId);
+        return self::PUBLISH;
       } else {
         $this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
+        return self::CREATE_AND_PUBLISH;
       }
-    }
-    $action = $this->ci->input->post("action");
-    if ($action == "createAndPublish") {
-      return self::CREATE_AND_PUBLISH;
-    } elseif ($action == "save") {
-      if ($id == "") return self::CREATE;
-      return self::EDIT;
-    } elseif ($action == "publish") {
-      return self::PUBLISH;
     }
     return false;
   }
