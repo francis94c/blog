@@ -47,6 +47,16 @@ class BlogTest {
     $_POST["action"] = "publish";
     $_POST["title"] .= "1E";
     $ci->unit->run($ci->blogger->savePost(1), Blogger::PUBLISH, "Publish Post.");
+    $_POST["title"] = "Egress Traffic";
+    unset($_POST["id"]);
+    $_POST["content"] = "GAE";
+    $_POST["action"] = "save";
+    $ci->unit->run($ci->blogger->savePost(1), Blogger::CREATE, "Create Post Test.");
+    $ci->unit->run($ci->blogger->getPost("Egress-Traffic", false)["title"], "Egress Traffic", "Post to be Deleted Test");
+    $_POST["id"] = $ci->blogger->getPost("Egress-Traffic", false)["id"];
+    $_POST["action"] = "delete";
+    $ci->unit->run($ci->blogger->savePost(1), Blogger::DELETE, "Blogger Delete Test");
+    $ci->unit->run($ci->blogger->getPost("Egress-Traffic", false), false, "Blogger Delete Post Test Result");
     $_POST["title"] .= "1E";
     $this->cleanUp($ci);
   }

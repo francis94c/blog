@@ -23,6 +23,8 @@ class Blogger {
 
   const PUBLISH = "publish";
 
+  const DELETE = "delete";
+
   const ABORT = "abortAction";
 
   function __construct($params=null) {
@@ -178,6 +180,8 @@ class Blogger {
         $this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
         return self::CREATE_AND_PUBLISH;
       }
+    } elseif ($action == "delete") {
+      if ($this->ci->bmanager->deletePost($this->ci->security->xss_clean($this->ci->input->post("id")))) return self::DELETE;
     }
     return false;
   }
