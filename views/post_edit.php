@@ -63,9 +63,6 @@ var simpleMDE = new SimpleMDE(
   }
 );
 simpleMDE.value(document.getElementById("content").innerHTML.trim());
-//var markdown = simpleMDE.value();
-//markdown = markdown.replace(/    /g, "  \r\n");
-//simpleMDE.value(markdown);
 /**
  * [save description]
  * @return [type] [description]
