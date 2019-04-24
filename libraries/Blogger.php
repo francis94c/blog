@@ -167,8 +167,7 @@ class Blogger {
         $this->ci->bmanager->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
         return self::CREATE;
       }
-    }
-    if ($action == "publish" || $action == "createAndPublish") {
+    } elseif ($action == "publish" || $action == "createAndPublish") {
       if ($action == "publish") {
         $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
         if ($id == "") return self::ABORT;
