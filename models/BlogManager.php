@@ -80,7 +80,7 @@ class BlogManager extends CI_Model {
    *                         return all posts. false by default.
    * @return array Array of posts for a given page.
    */
-  function getPosts($page, $limit, $filter=false, $hits=false) {
+  function getPosts($page=1, $limit=5, $filter=false, $hits=false) {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
     if ($filter) $this->db->where("published", 1);
     if ($hits) {

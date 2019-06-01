@@ -207,7 +207,7 @@ class Blogger {
    * @param  boolean $hits       [description]
    * @return [type]              [description]
    */
-  function renderPostItems($view=null, $callback = null, $empty_view=null, $page, $limit, $filter=false, $hits=false) {
+  function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false) {
     if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blog", $blogger);
     $posts = $this->getPosts($page, $limit, $filter, $hits);
     if (count($posts) == 0) {
