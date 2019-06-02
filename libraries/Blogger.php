@@ -207,7 +207,7 @@ class Blogger {
    * @param  boolean $hits       [description]
    * @return [type]              [description]
    */
-  function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false) {
+  function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false, $slug=true) {
     if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blog", $blogger);
     $posts = $this->getPosts($page, $limit, $filter, $hits);
     if (count($posts) == 0) {
@@ -217,7 +217,7 @@ class Blogger {
       }
     }
     foreach ($posts as $post) {
-      $post["callback"] = $callback != null ? trim($callback, "/") . "/" . $post["slug"] : "";
+      $post["callback"] = $callback != null ? trim($callback, "/") . "/" . ($slug ? $post["slug"] : $post["id"]) : "";
       $post["filter"] = $filter;
       $post["content"] = $this->ci->parsedown->text($post["content"]);
       if ($view == null) {$blogger->load->view("post_list_item", $post); } else {
