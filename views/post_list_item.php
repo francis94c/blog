@@ -6,7 +6,7 @@
     </div>
     <div class="w3-right">
       <p class="w3-text-gray">
-        <?php if ($filter) {?>
+        <?php if (!$filter) {?>
         <span class="w3-text-<?=$published == 1 ? "green" : "black"?>">
           <i class="fa fa-stop"></i>
         </span>
