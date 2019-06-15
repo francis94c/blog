@@ -78,7 +78,8 @@ class BlogManager extends CI_Model {
    * @param  int     $limit  Number of posts to return.
    * @param  boolean $filter if true, returns only published posts, if false
    *                         return all posts. false by default.
-   * @return array Array of posts for a given page.
+   * @param  boolean $hits   order by hits.
+   * @return array           Array of posts for a given page.
    */
   function getPosts($page=1, $limit=5, $filter=false, $hits=false) {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
@@ -88,6 +89,18 @@ class BlogManager extends CI_Model {
     } else {
       $this->db->order_by("id", "DESC");
     }
+    return $this->db->get($this->table_name)->result_array();
+  }
+  /**
+   * [getRecentPosts description]
+   * @param  integer $limit  [description]
+   * @param  boolean $filter [description]
+   * @return [type]          [description]
+   */
+  function getRecentPosts($limit=5, $filter=false) {
+    if ($limit != null && $limit != null) $this->db->limit($limit);
+    if ($filter) $this->db->where("published", 1);
+    $this->db->order_by("id", "DESC");
     return $this->db->get($this->table_name)->result_array();
   }
   /**

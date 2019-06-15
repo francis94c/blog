@@ -227,6 +227,15 @@ class Blogger {
     }
   }
   /**
+   * [getRecentPosts description]
+   * @param  integer $limit  [description]
+   * @param  boolean $filter [description]
+   * @return [type]          [description]
+   */
+  function getRecentPosts($limit=5, $filter=false) {
+    return $this->ci->bmanager->getRecentPosts($limit, $filter);
+  }
+  /**
    * [renderPost description]
    * @param  [type] $post [description]
    * @param  [type] $view [description]
