@@ -114,7 +114,8 @@ class BlogManager extends CI_Model {
   function savePost($postId, $title, $content) {
     $data = array (
       "title"   => $title,
-      "content" => $content
+      "content" => $content,
+      "slug"    => url_title($title)
     );
     $this->db->where("id", $postId);
     return $this->db->update($this->table_name, $data);
