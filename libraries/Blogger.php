@@ -174,7 +174,7 @@ class Blogger {
         $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
         if ($id == "") return self::ABORT;
         $this->ci->bmanager->savePost($id, $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
-        $this->ci->bmanager->publishPost($id, $posterId);
+        $this->ci->bmanager->publishPost($id, true);
         return self::PUBLISH;
       } else {
         $this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
