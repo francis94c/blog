@@ -15,6 +15,8 @@ $params = array("name" => "blog_name");
 $this->load->splint("francis94c/blog", "+Blogger", $params, "blogger");
 ```
 
+_You must load with a blog name._
+
 You can manage multiple blogs with the library. To use another blog, you must have installed the blog (This simply means creating the table for the blog contents with the given name of a blog) with the ```install()``` function.
 
 ```php
@@ -23,10 +25,10 @@ You can manage multiple blogs with the library. To use another blog, you must ha
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
    * @param  string $blogName                The name of the blog
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-   * @param  string $adminTableName          the name of the table containing admins (this is required if you have an admins section and you wan to keep track of who 
+   * @param  string $adminTableName          the name of the table containing admins (this is required if you have an admins section and you wan to keep track of who
    *                                         creates/edits what). This is basically used to add a foreign key constraint on the blog table's column of admin if provided.
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-   * @param  string $adminIdColumnName       The name of the column in the given admin table that has the  id of each admin. this is usuall an AUTO_INCREMENT field 
+   * @param  string $adminIdColumnName       The name of the column in the given admin table that has the  id of each admin. this is usuall an AUTO_INCREMENT field
    *                                         called 'id'.
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
    * @param  int    $adminIdColumnConstraint The costrint of the id column in the admins table. e.g 7 for id INT(7), etc.
@@ -47,7 +49,7 @@ To load the post editor, call the ```loadEditor()``` method.
 /**
    * loadEditor [loads a markdown editor.]
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-   * @param  string  $callback the URI (controller/method combination) the editor form will be submitted to when any of the buttons 'Create, Save, Save and Publish' is 
+   * @param  string  $callback the URI (controller/method combination) the editor form will be submitted to when any of the buttons 'Create, Save, Save and Publish' is
    *                           clicked. e.g 'MyBlog/savePost' for the controller 'MyBlog' with a 'savePost' function.
    * --------------------------------------------------------------------------------------------------------------------------------------------------------------------
    * @param  int     $postId   the id if a post to edit.
@@ -61,6 +63,25 @@ The controller function specified by the ```$callback``` must call the library's
 
 ```php
 $this->blogger->savePost([$adminId]); // $adminId is optional. However, you must supply this value if you installed the current blog with an admin table name and id.
+```
+
+### Example Application Flow ###
+
+The blog package when loaded, makes available to you, class functions that help you carry out the basic function of a blog such as the below
+* Create/Install a Blog (Internally created a table within your default database with '\_blog_posts' as suffix).
+* Load Post Editor
+* Perform persistent actions (Save, Publish & Delete);
+
+The persistent action (Creation of a Blog Post) can be protected by setting a FOREIGN KEY constraint on the blog table with your admin table's ID column.
+
+#### Install a Blog ####
+This has been discusses in the [Usage](#usage) section.
+
+This class method (`install`) is meant to be called in a `Controller` function on it's own as it doesn't need to be called often, just once to create your blog table. unless you have more advanced application where you dynamically create blog tables at will.
+
+#### Load MarkDown Editor ####
+```php
+$this->blog->loadEditor($callback, $postId, $w3css);
 ```
 
 ### Wiki ###
