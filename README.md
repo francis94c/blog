@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francis94c/blog/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/francis94c/blog/?branch=master)
+
 # blog #
 ----
 
