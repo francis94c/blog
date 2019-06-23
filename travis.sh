@@ -1,5 +1,5 @@
 # ENV
-SPLINT_VERSION="0.0.3"
+SPLINT_VERSION="0.0.2"
 VENDOR="francis94c"
 PACKAGE="blog"
 

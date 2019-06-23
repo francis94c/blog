@@ -12,5 +12,7 @@ before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'
 install: ./travis.sh
 env:
-  - CI_ENV="testing_db"
-script: phpunit
+  - CI_ENV="testing"
+script:
+  - composer require phpunit/phpunit
+  - ./vendor/bin/phpunit
