@@ -10,7 +10,7 @@ branches:
         - master
 before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'
-install: ./travis.sh
+install: ./francis94c/blog/travis.sh
 env:
   - CI_ENV="testing_db"
 script: phpunit

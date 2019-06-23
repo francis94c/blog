@@ -9,14 +9,17 @@ created=false
 for entry in ./*
 do
 	if [ $created = false ]; then
-		mkdir -p travis-splint-$SPLINT_VERSION/application/splints/$VENDOR/$PACKAGE
+		mkdir -p travis-splint-$SPLINT_VERSION/application/splints/
 		$created = true
 	fi
-	if [ "x$entry" != "x./phpunit.xml" ] && [ "x$entry" != "x./travis.sh" ]; then
-		cp -r $entry travis-splint-$SPLINT_VERSION/application/splints/$VENDOR/$PACKAGE/
+	if [ "x$entry" != "x./$VENDOR/$PACKAGE/phpunit.xml" ] && [ "x$entry" != "x./$VENDOR/$PACKAGE/travis.sh" ]; then
+		echo $entry
+		cp -r $entry travis-splint-$SPLINT_VERSION/application/splints/
 		rm -rf $entry
 	fi
 done
+
+cp "$VENDOR/$PACKAGE/phpunit.xml" "../../phpunit.xml"
 
 wget https://github.com/splintci/travis-splint/archive/v$SPLINT_VERSION.tar.gz -O - | tar xz
 
