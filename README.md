@@ -1,4 +1,4 @@
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francis94c/blog/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/francis94c/blog/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francis94c/blog/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/francis94c/blog/?branch=master) [![Build Status](https://travis-ci.org/francis94c/blog.svg?branch=master)](https://travis-ci.org/francis94c/blog)
 
 # blog #
 ----
