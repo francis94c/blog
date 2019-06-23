@@ -3,7 +3,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BlogTest extends TestCase {
 
-  public function testLoadBlog(): void {
+  public function testLoadBlog() {
     $ci =& get_instance();
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
     $ci->load->database();
