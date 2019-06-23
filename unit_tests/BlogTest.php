@@ -6,9 +6,6 @@ final class BlogTest extends TestCase {
   public function testLoadBlog() {
     $ci =& get_instance();
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
-    $ci->load->database();
-    $ci->load->dbforge();
-    $this->assertTrue($ci->dbforge->create_database('blog_db'));
     $db['hostname'] = 'localhost';
     $db['username'] = 'root';
     $db['password'] = '';

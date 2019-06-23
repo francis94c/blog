@@ -1,14 +1,16 @@
 language: php
 sudo: required
+services:
+  - mysql
 php:
-  - '7.1'
+  - '7.3'
   - '7.2'
 branches:
     only:
         - master
+before_install:
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS blog_db;'
 install: ./travis.sh
 env:
   - CI_ENV="testing"
-services:
-  - mysql
 script: phpunit
