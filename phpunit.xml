@@ -1,4 +1,4 @@
-<phpunit bootstrap="ci/index.php"
+<phpunit bootstrap="travis-splint-0.0.2/index.php"
 	colors="true"
 	convertErrorsToExceptions="true"
 	convertNoticesToExceptions="true"
