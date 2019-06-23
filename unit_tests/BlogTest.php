@@ -6,19 +6,7 @@ final class BlogTest extends TestCase {
   public function testLoadBlog() {
     $ci =& get_instance();
     $ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
-    $db['hostname'] = 'localhost';
-    $db['username'] = 'root';
-    $db['password'] = '';
-    $db['database'] = 'blog_db';
-    $db['dbdriver'] = 'mysqli';
-    $db['dbprefix'] = '';
-    $db['pconnect'] = FALSE;
-    $db['db_debug'] = TRUE;
-    $db['cache_on'] = FALSE;
-    $db['cachedir'] = '';
-    $db['char_set'] = 'utf8';
-    $db['dbcollat'] = 'utf8_general_ci';
-    $ci->load->database($db);
+    $ci->load->database();
     $this->assertTrue($ci->blogger->install("test_blog"));
   }
 }
