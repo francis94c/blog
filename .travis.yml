@@ -12,5 +12,5 @@ before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS blog_db;'
 install: ./travis.sh
 env:
-  - CI_ENV="testing"
+  - CI_ENV="testing_db"
 script: phpunit
