@@ -1,0 +1,14 @@
+language: php
+php:
+  - '5.4'
+  - '5.6'
+  - '7.0'
+branches:
+    only:
+        - master
+install: ./travis.sh
+env:
+  - CI_ENV="testing"
+services:
+  - mysql
+script: phpunit

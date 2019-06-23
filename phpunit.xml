@@ -1,0 +1,14 @@
+<phpunit bootstrap="ci/index.php"
+	colors="true"
+	convertErrorsToExceptions="true"
+	convertNoticesToExceptions="true"
+	convertWarningsToExceptions="true"
+	processIsolation="false"
+	stopOnFailure="false"
+	verbose="true">
+	<testsuites>
+		<testsuite name="My Test Suite">
+			<file>travis-splint-0.0.2/application/splints/francis94c/blog/unit_tests/BlogTest.php</file>
+		</testsuite>
+	</testsuites>
+</phpunit>
