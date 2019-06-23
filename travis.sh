@@ -8,6 +8,7 @@ created=false
 
 for entry in ./*
 do
+	echo ${entry}
 	if [ $created = false ]; then
 		mkdir -p travis-splint-${SPLINT_VERSION}/application/splints/${VENDOR}/${PACKAGE}
 		$created = true
