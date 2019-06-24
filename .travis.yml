@@ -9,10 +9,11 @@ branches:
     only:
         - master
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS test_db; use test_db;'
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'
 install: ./travis.sh
 env:
   - CI_ENV="testing"
 script:
-  - composer require phpunit/phpunit
-  - ./vendor/bin/phpunit
+  - composer require satooshi/php-coveralls
+  - phpunit
+after-script: php vendor/bin/coberalls -v
