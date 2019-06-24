@@ -14,4 +14,9 @@
 	<logging>
 		<log type="coverage-clover" target="./tests/logs/clover.xml"/>
 	</logging>
+	<filter>
+		<whitelist addUncoveredFilesFromWhitelist="true">
+			<directory>./</directory>
+		</whitelist>
+  </filter>
 </phpunit>
