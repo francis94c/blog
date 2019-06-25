@@ -17,6 +17,10 @@
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog</directory>
+			<exclude>
+				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog/tests</directory>
+				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog/views</directory>
+			</exclude>
 		</whitelist>
   </filter>
 </phpunit>
