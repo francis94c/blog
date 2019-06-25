@@ -16,7 +16,7 @@
 	</logging>
 	<filter>
 		<whitelist addUncoveredFilesFromWhitelist="true">
-			<directory>./</directory>
+			<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog/unit_tests</directory>
 		</whitelist>
   </filter>
 </phpunit>

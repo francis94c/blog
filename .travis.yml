@@ -12,9 +12,16 @@ before_install:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'
 install: ./travis.sh
 env:
-  - CI_ENV="testing"
+  global:
+    - CI_ENV="testing"
+    - COVERALLS_REPO_TOKEN="vHO8GOAIolz9IyEUtf7das1D4wk8cYwwI"
+    - TRAVIS="true"
+    - TRAVIS_JOB_ID="$TRAVIS_JOB_ID"
+    - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
+    - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
+    - CI_BRANCH="$TRAVIS_BRANCH"
 script:
   - composer require php-coveralls/php-coveralls
   - phpunit
 after_success:
-  - travis_retry php vendor/bin/coveralls -v
+  - travis_retry php vendor/bin/php-coveralls -v
