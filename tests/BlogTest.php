@@ -66,4 +66,3 @@ class BlogTest {
     $ci->db->empty_table("blogger_posts_release_notes");
   }
 }
-?>

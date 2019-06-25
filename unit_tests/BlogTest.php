@@ -11,4 +11,3 @@ final class BlogTest extends TestCase {
     $this->assertTrue($ci->blogger->install("test_blog"));
   }
 }
-?>

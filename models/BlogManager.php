@@ -213,4 +213,3 @@ class BlogManager extends CI_Model {
     return $this->db->get($this->table_name)->result_array();
   }
 }
-?>

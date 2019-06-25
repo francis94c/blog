@@ -315,4 +315,3 @@ class Blogger {
     return $this->ci->bmanager->searchPosts($words, $page, $limit, $filter);
   }
 }
-?>
