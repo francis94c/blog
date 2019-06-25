@@ -45,7 +45,7 @@ class Blogger {
    * @param  [type] $adminIdColumnConstraint [description]
    * @return [type]                          [description]
    */
-  function install($blogName=null, $adminTableName = null, $adminIdColumnName = null, $adminIdColumnConstraint = null) {
+  public function install($blogName=null, $adminTableName = null, $adminIdColumnName = null, $adminIdColumnConstraint = null) {
     $blogName = $blogName == null ? $this->table_name : self::TABLE_PREFIX . "_" . $blogName;
     $this->ci->load->dbforge();
     $this->ci->dbforge->add_field("id");
@@ -95,7 +95,7 @@ class Blogger {
    * [setBlog description]
    * @param [type] $name [description]
    */
-  function setName($name) {
+  public function setName($name) {
     $this->table_name = self::TABLE_PREFIX . "_" . $name;
     $this->ci->bmanager->setBlogName($name != "" ? $name : null);
   }
@@ -103,7 +103,7 @@ class Blogger {
    * [getBlog description]
    * @return [type] [description]
    */
-  function getName() {
+  public function getName() {
     return $this->table_name;
   }
   /**
@@ -120,14 +120,14 @@ class Blogger {
    * [w3css description]
    * @return [type] [description]
    */
-  function w3css() {
+  public function w3css() {
     return "<link rel=\"stylesheet\" href=\"https://www.w3schools.com/w3css/4/w3.css\">";
   }
   /**
    * [fontsAwesome description]
    * @return [type] [description]
    */
-  function fontsAwesome() {
+  public function fontsAwesome() {
     return "<link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.3.1/css/all.css\"";
   }
   /**
@@ -137,7 +137,7 @@ class Blogger {
    * @param  boolean $w3css    [description]
    * @return [type]            [description]
    */
-  function loadEditor($callback, $postId=null, $w3css=true) {
+  public function loadEditor($callback, $postId=null, $w3css=true) {
     $this->loadScripts($w3css);
     $this->ci->load->helper("form");
     $data = array(
@@ -158,7 +158,7 @@ class Blogger {
    * @param  [type] $posterId [description]
    * @return [type]           [description]
    */
-  function savePost($posterId=null) {
+  public function savePost($posterId=null) {
     $action = $this->ci->security->xss_clean($this->ci->input->post("action"));
     if ($action == "save") {
       $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
@@ -194,7 +194,7 @@ class Blogger {
    *                         return all posts. false by default.
    * @return array Array of posts for a given page.
    */
-  function getPosts($page, $limit, $filter=false, $hits=false) {
+  public function getPosts($page, $limit, $filter=false, $hits=false) {
     return $this->ci->bmanager->getPosts($page, $limit, $filter, $hits);
   }
   /**
@@ -207,7 +207,7 @@ class Blogger {
    * @param  boolean $hits       [description]
    * @return [type]              [description]
    */
-  function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false, $slug=true) {
+  public function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false, $slug=true) {
     if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blog", $blogger);
     $posts = $this->getPosts($page, $limit, $filter, $hits);
     if (count($posts) == 0) {
@@ -232,7 +232,7 @@ class Blogger {
    * @param  boolean $filter [description]
    * @return [type]          [description]
    */
-  function getRecentPosts($limit=5, $filter=false) {
+  public function getRecentPosts($limit=5, $filter=false) {
     return $this->ci->bmanager->getRecentPosts($limit, $filter);
   }
   /**
@@ -241,7 +241,7 @@ class Blogger {
    * @param  [type] $view [description]
    * @return [type]       [description]
    */
-  function renderPost($post, $view=null) {
+  public function renderPost($post, $view=null) {
     if (!is_array($post)) $post = $this->ci->bmanager->getPost($post);
     $post["content"] = $this->ci->parsedown->text($post["content"]);
     if ($view == null) {
@@ -255,7 +255,7 @@ class Blogger {
    * @param  [type] $post [description]
    * @return [type]       [description]
    */
-  function metaOg($post) {
+  public function metaOg($post) {
     $data = array();
     $data["title"] = $post["title"];
     $data["description"] = substr($post["content"], 0, 154);
@@ -267,7 +267,7 @@ class Blogger {
    * [getPostsCount description]
    * @return [type] [description]
    */
-  function getPostsCount() {
+  public function getPostsCount() {
     return $this->ci->bmanager->getPostsCount();
   }
   /**
@@ -275,7 +275,7 @@ class Blogger {
    * @param  [type] $postId [description]
    * @return [type]         [description]
    */
-  function getPost($postId, $hit=true) {
+  public function getPost($postId, $hit=true) {
     return $this->ci->bmanager->getPost($postId, $hit);
   }
   /**
@@ -283,7 +283,7 @@ class Blogger {
    * @param  [type] $postId [description]
    * @return [type]         [description]
    */
-  function getHits($postId) {
+  public function getHits($postId) {
     return $this->ci->bmanager->getHits($postId);
   }
   /**
@@ -292,7 +292,7 @@ class Blogger {
    * @param  [type] $publish [description]
    * @return [type]          [description]
    */
-  function publishPost($postId, $publish) {
+  public function publishPost($postId, $publish) {
     return $this->ci->bmanager->publishPost($postId, $publish);
   }
   /**
@@ -300,7 +300,7 @@ class Blogger {
    * @param  [type] $postId [description]
    * @return [type]         [description]
    */
-  function deletePost($postId) {
+  public function deletePost($postId) {
     return $this->ci->bmanager->deletePost($postId);
   }
   /**
@@ -311,7 +311,7 @@ class Blogger {
    * @param  boolean $filter [description]
    * @return [type]          [description]
    */
-  function searchPosts($words, $page, $limit=0, $filter=false) {
+  public function searchPosts($words, $page, $limit=0, $filter=false) {
     return $this->ci->bmanager->searchPosts($words, $page, $limit, $filter);
   }
 }

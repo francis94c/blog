@@ -1,27 +1,27 @@
 language: php
 sudo: required
 services:
-  - mysql
+- mysql
 php:
-  - '7.3'
-  - '7.2'
+- '7.3'
+- '7.2'
 branches:
-    only:
-        - master
+  only:
+  - master
 before_install:
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'
-install: ./travis.sh
+- mysql -e 'CREATE DATABASE IF NOT EXISTS test_db;'
+install: "./travis.sh"
 env:
   global:
-    - CI_ENV="testing"
-    - COVERALLS_REPO_TOKEN="vHO8GOAIolz9IyEUtf7das1D4wk8cYwwI"
-    - TRAVIS="true"
-    - TRAVIS_JOB_ID="$TRAVIS_JOB_ID"
-    - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
-    - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
-    - CI_BRANCH="$TRAVIS_BRANCH"
+  - CI_ENV="testing"
+  - TRAVIS="true"
+  - TRAVIS_JOB_ID="$TRAVIS_JOB_ID"
+  - CI_BUILD_NUMBER="$TRAVIS_BUILD_NUMBER"
+  - CI_PULL_REQUEST="$TRAVIS_PULL_REQUEST"
+  - CI_BRANCH="$TRAVIS_BRANCH"
+  - secure: EXeOkCXfK9yIKtIr423EU86NO7zx7oq7ZY2FyVE5L8rTkhEGO3KJNTqBCoallyjx5sL60SCXwrQrjLsH+CLc4WvI4ePrRF64ea7ESPNKGXeRh7XDxH9hlwFn65g+Xo0CWbMHEErq/cNekbSwRT2rCcx5elOYatylrvlp40L+Ht7rxgCEPaot1HmRfMle4VVHpW2MH8ra1GksylQmqaOhGQ4lmj2U99bw+34qEm2RUJKChEAX8gfLhakuk5n4stCuXpf/iv3pMaUd3nEsue/4fVXSJ2kCrlx6m0TAycUBsqGoBbMoKp0BGKBUtwt7XaG3+XRFCIxfQAuk2Jyep3Nn4+mf7x70E36c4rd606og08aFU0ujuIk2c0VmuPSNReNa9+04LzbUZojtt/wrN5fpgLBqDFcKXLpqOSUcw/HaxjAcDrwVruDWlF9xKx3/VsWJ9l3Kmj/PIxH4ySbW/dhl0HX3xpJU1NC4Kk86TY0iJHAt0Jmkq36DuSZ6A7y5pS1d2vsBtqNusv+vrRBne7/+30oE7JDKAf9sMh9/v6BK2jWPvku8bB/35mfEoDwBe9Ow8qDsnFDDImHuuXLNbqdRd9S7MM4deIgoG0tYDHX025YWhTDfn92hAwHeGjDJNNie34GJPzmihJtcx3S8pvmXVhP6PPD7D6QDWjCs+wsaD8A=
 script:
-  - composer require php-coveralls/php-coveralls
-  - phpunit
+- composer require php-coveralls/php-coveralls
+- phpunit
 after_success:
-  - travis_retry php vendor/bin/php-coveralls -v
+- travis_retry php vendor/bin/php-coveralls -v

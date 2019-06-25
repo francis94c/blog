@@ -1,4 +1,4 @@
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francis94c/blog/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/francis94c/blog/?branch=master) [![Build Status](https://travis-ci.org/francis94c/blog.svg?branch=master)](https://travis-ci.org/francis94c/blog)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/francis94c/blog/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/francis94c/blog/?branch=master) [![Build Status](https://travis-ci.org/francis94c/blog.svg?branch=master)](https://travis-ci.org/francis94c/blog) [![Coverage Status](https://coveralls.io/repos/github/francis94c/blog/badge.svg?branch=master)](https://coveralls.io/github/francis94c/blog?branch=master)
 
 # blog #
 ----
