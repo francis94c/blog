@@ -94,10 +94,19 @@ class Blogger {
   /**
    * [setBlog description]
    * @param [type] $name [description]
+   * @deprecated
    */
   public function setName($name) {
     $this->table_name = self::TABLE_PREFIX . "_" . $name;
     $this->ci->bmanager->setBlogName($name != "" ? $name : null);
+  }
+  /**
+   * [setBlog description]
+   * @param [type] $blog [description]
+   */
+  public function setBlog($blog) {
+    $this->table_name = self::TABLE_PREFIX . "_" . $blog;
+    $this->ci->bmanager->setBlogName($blog != "" ? $blog : null);
   }
   /**
    * [getBlog description]
@@ -152,6 +161,7 @@ class Blogger {
       $data["content"] = $post["content"];
     }
     $this->ci->load->splint("francis94c/blog", "-post_edit", $data);
+    return true;
   }
   /**
    * [savePost description]
@@ -213,7 +223,7 @@ class Blogger {
     if (count($posts) == 0) {
       if ($empty_view == null) { $blogger->load->view("empty"); } else {
         $this->ci->load->view($empty_view);
-        return;
+        return true;
       }
     }
     $this->ci->load->helper("text");
@@ -225,6 +235,7 @@ class Blogger {
         $this->ci->load->view($view, $post);
       }
     }
+    return true;
   }
   /**
    * [getRecentPosts description]
