@@ -30,8 +30,8 @@ final class BlogTest extends TestCase {
    */
   public function testInstallBlog() {
     $this->assertTrue(self::$ci->blogger->install("test_blog"), "Blog Installed Successfuly without admin ID constraint.");
-    $this->assertTrue(self::$ci->db->table_exists("blogger_posts_test_blog"));
-    $fields = self::$ci->db->list_fields("blogger_posts_test_blog");
+    $this->assertTrue(self::$ci->db->table_exists(Blogger::TABLE_PREFIX . "_test_blog"));
+    $fields = self::$ci->db->list_fields(Blogger::TABLE_PREFIX . "_test_blog");
     $this->assertContains("id", $fields);
     $this->assertContains("title", $fields);
     $this->assertContains("content", $fields);
@@ -40,7 +40,7 @@ final class BlogTest extends TestCase {
     $this->assertContains("date_published", $fields);
     $this->assertTrue(self::$ci->blogger->install("test_blog"), "Verify CREATE IF NOT EXISTS clause");
     $this->assertTrue(self::$ci->blogger->install("admin_test_blog", "admins", "id", 7), "Create Blog with existent admin constarint");
-    $fields = self::$ci->db->list_fields("blogger_posts_admin_test_blog");
+    $fields = self::$ci->db->list_fields(Blogger::TABLE_PREFIX . "_admin_test_blog");
     $this->assertContains("id", $fields);
     $this->assertContains("title", $fields);
     $this->assertContains("content", $fields);
@@ -114,6 +114,13 @@ final class BlogTest extends TestCase {
     $this->assertEquals(1, $post["published"]);
     $this->assertNotEquals(null, $post["date_published"]);
     $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(), "No 2 blog posts can have the same title.");
+  }
+  /**
+   * [testDynamicFunctions description]
+   */
+  public function testDynamicFunctions(): void {
+    self::$ci->blogger->setBlog("rocket_blog");
+    $this->assertEquals(Blogger::TABLE_PREFIX . "_rocket_blog", self::$ci->blogger->getName(), "Blogger setBlog works.");
   }
   /**
    * [tearDownAfterClass description]
