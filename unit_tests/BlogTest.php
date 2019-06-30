@@ -86,6 +86,5 @@ final class BlogTest extends TestCase {
     self::$ci->dbforge->drop_table("admins");
     self::$ci->dbforge->drop_table("blogger_posts_test_blog");
     self::$ci->dbforge->drop_table("blogger_posts_admin_test_blog");
-
   }
 }
