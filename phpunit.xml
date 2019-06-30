@@ -5,7 +5,8 @@
 	convertWarningsToExceptions="true"
 	processIsolation="false"
 	stopOnFailure="false"
-	verbose="true">
+	verbose="true"
+	testdox="true">
 	<testsuites>
 		<testsuite name="My Test Suite">
 			<file>travis-splint-0.0.2/application/splints/francis94c/blog/unit_tests/BlogTest.php</file>

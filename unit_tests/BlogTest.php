@@ -74,6 +74,26 @@ final class BlogTest extends TestCase {
     $_POST["id"] = 1;
     $this->assertEquals(self::$ci->blogger->savePost(), Blogger::EDIT);
     $this->assertTrue(self::$ci->blogger->renderPost("Hello-Title", null));
+    $post = self::$ci->blogger->getPost("Hello-Title", false);
+    $this->assertTrue(is_array($post));
+    $this->assertArrayHasKey("id", $post);
+    $this->assertArrayHasKey("title", $post);
+    $this->assertArrayHasKey("content", $post);
+    $this->assertArrayHasKey("published", $post);
+    $this->assertArrayHasKey("date_published", $post);
+    $this->assertArrayHasKey("slug", $post);
+    $this->assertEquals($post["id"], 1, "Assert Post ID");
+    $this->assertEquals($post["title"], "Hello Title", "Assert Post Title");
+    $this->assertEquals($post["content"], "The Quick Brown Fox Jumped over the Lazy Dog. Again.");
+    $this->assertEquals($post["slug"], "Hello-Title");
+    $this->assertEquals($post["published"], 0);
+    $this->assertEquals($post["date_published"], null);
+    $_POST["action"] = "publish";
+    $this->assertEquals(self::$ci->blogger->savePost(), Blogger::PUBLISH);
+    $post = self::$ci->blogger->getPost("Hello-Title", false);
+    $this->assertTrue(is_array($post));
+    $this->assertEquals($post["published"], 1);
+    $this->assertNotEquals($post["date_published"], null);
   }
   /**
    * [tearDownAfterClass description]
