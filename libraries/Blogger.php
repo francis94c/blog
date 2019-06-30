@@ -188,8 +188,10 @@ class Blogger {
         $this->ci->bmanager->publishPost($id, true);
         return self::PUBLISH;
       } else {
-        $this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
-        return self::CREATE_AND_PUBLISH;
+        if ($this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId) !== false) {
+          return self::CREATE_AND_PUBLISH;
+        }
+        return self::ABORT;
       }
     } elseif ($action == "delete") {
       if ($this->ci->bmanager->deletePost($this->ci->security->xss_clean($this->ci->input->post("id")))) return self::DELETE;

@@ -82,18 +82,38 @@ final class BlogTest extends TestCase {
     $this->assertArrayHasKey("published", $post);
     $this->assertArrayHasKey("date_published", $post);
     $this->assertArrayHasKey("slug", $post);
-    $this->assertEquals($post["id"], 1, "Assert Post ID");
-    $this->assertEquals($post["title"], "Hello Title", "Assert Post Title");
-    $this->assertEquals($post["content"], "The Quick Brown Fox Jumped over the Lazy Dog. Again.");
-    $this->assertEquals($post["slug"], "Hello-Title");
-    $this->assertEquals($post["published"], 0);
-    $this->assertEquals($post["date_published"], null);
+    $this->assertEquals(1, $post["id"], "Assert Post ID");
+    $this->assertEquals("Hello Title", $post["title"], "Assert Post Title");
+    $this->assertEquals("The Quick Brown Fox Jumped over the Lazy Dog. Again.", $post["content"]);
+    $this->assertEquals("Hello-Title", $post["slug"]);
+    $this->assertEquals(0, $post["published"]);
+    $this->assertEquals(null, $post["date_published"]);
     $_POST["action"] = "publish";
     $this->assertEquals(self::$ci->blogger->savePost(), Blogger::PUBLISH);
     $post = self::$ci->blogger->getPost("Hello-Title", false);
     $this->assertTrue(is_array($post));
-    $this->assertEquals($post["published"], 1);
-    $this->assertNotEquals($post["date_published"], null);
+    $this->assertEquals(1, $post["published"]);
+    $this->assertNotEquals(null, $post["date_published"]);
+    $_POST["action"] = "createAndPublish";
+    $_POST["title"] = "Hello Title 2";
+    $_POST["editor"] = "Create and Published Post.";
+    unset($_POST["id"]);
+    $this->assertEquals(Blogger::CREATE_AND_PUBLISH, self::$ci->blogger->savePost());
+    $post = self::$ci->blogger->getPost("Hello-Title-2", false);
+    $this->assertTrue(is_array($post));
+    $this->assertArrayHasKey("id", $post);
+    $this->assertArrayHasKey("title", $post);
+    $this->assertArrayHasKey("content", $post);
+    $this->assertArrayHasKey("published", $post);
+    $this->assertArrayHasKey("date_published", $post);
+    $this->assertArrayHasKey("slug", $post);
+    $this->assertEquals(2, $post["id"], "Assert Post ID");
+    $this->assertEquals("Hello Title 2", $post["title"], "Assert Post Title");
+    $this->assertEquals("Create and Published Post.", $post["content"]);
+    $this->assertEquals("Hello-Title-2", $post["slug"]);
+    $this->assertEquals(1, $post["published"]);
+    $this->assertNotEquals(null, $post["date_published"]);
+    $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(), "No 2 blog posts can have the same title.");
   }
   /**
    * [tearDownAfterClass description]
