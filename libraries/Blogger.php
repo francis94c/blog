@@ -82,11 +82,11 @@ class Blogger {
         "type"       => "INT",
         "constraint" => $adminIdColumnConstraint
       );
-      $this->ci->dbforge->add_field($fields);
-      $this->ci->dbforge->add_field("date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
       $this->ci->dbforge->add_field(
         "FOREIGN KEY (poster_id) REFERENCES $adminTableName($adminIdColumnName)");
     }
+    $this->ci->dbforge->add_field($fields);
+    $this->ci->dbforge->add_field("date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
     $attributes = array('ENGINE' => 'InnoDB');
     if (!$this->ci->dbforge->create_table($blogName, true, $attributes)) return false;
     return true;
@@ -254,12 +254,14 @@ class Blogger {
    */
   public function renderPost($post, $view=null) {
     if (!is_array($post)) $post = $this->ci->bmanager->getPost($post);
+    if (!$post) return false;
     $post["content"] = $this->ci->parsedown->text($post["content"]);
     if ($view == null) {
       $this->ci->load->splint("francis94c/blog", "-post_item", $post);
     } else {
       $this->ci->load->view($view, $post);
     }
+    return true;
   }
   /**
    * [metaOg description]
