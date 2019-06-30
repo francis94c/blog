@@ -41,6 +41,7 @@ class BlogManager extends CI_Model {
    *                         created.
    */
   function createPost($title, $content, $adminId=null) {
+    $this->ci->load->helper("url");
     $data = array(
       "title"   => $title,
       "content" => $content,
