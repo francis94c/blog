@@ -62,7 +62,8 @@ class Blogger {
         "null" => true
       ),
       "published" => array(
-        "type" => "TINYINT"
+        "type" => "TINYINT",
+        "default" => 0
       ),
       "hits"      => array(
         "type"       => "INT",
