@@ -2,7 +2,7 @@
   "name": "francis94c/blog",
   "type": "library",
   "description": "A blog library for Code Igniter. manages article like contents like blogs, release notes, etc.",
-  "tags": ["preference"],
+  "tags": ["preference", "blog", "article", "medium"],
   "page": "https://github.com/francis94c/blog",
   "authors": [
     {
@@ -12,7 +12,7 @@
       "role": "Developer"
     }
   ],
-  "php": ">=5.3.0",
+  "php": ">=7.3",
   "depends-on": [
     "francis94c/ci-parsedown"
   ]
