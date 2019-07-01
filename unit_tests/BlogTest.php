@@ -6,7 +6,7 @@ final class BlogTest extends TestCase {
 
   /**
    * Code Igniter Instance.
-   * @var [type]
+   * @var object
    */
   private static $ci;
 
