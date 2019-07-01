@@ -70,7 +70,7 @@ class Blogger {
    * @param mixed $params associative array of parameters. See README.md
    */
   function __construct($params=null) {
-    $this->ci =& get_instance();
+    $this->ci =& /** @scrutinizer ignore-call */ get_instance();
     $this->ci->load->database();
     $this->table_name = self::TABLE_PREFIX . (isset($params["name"]) ? "_" . $params["name"] : "");
     $this->ci->load->database();
@@ -150,18 +150,18 @@ class Blogger {
     $this->ci->bmanager->setBlogName($name != "" ? $name : null);
   }
   /**
-   * [setBlog description]
-   * @param [type] $blog [description]
+   * Same as the deprecated setName. Sets the name of the current blog table.
+   * @param string $blog [description]
    */
-  public function setBlog($blog) {
+  public function setBlog(string $blog): void {
     $this->table_name = self::TABLE_PREFIX . "_" . $blog;
     $this->ci->bmanager->setBlogName($blog != "" ? $blog : null);
   }
   /**
-   * [getBlog description]
-   * @return [type] [description]
+   * Gets the name of the blog.
+   * @return string The name of the blog.
    */
-  public function getName() {
+  public function getName(): string {
     return $this->table_name;
   }
   /**
