@@ -265,9 +265,9 @@ class Blogger {
   /**
    * [handleSavePost handles save pot actions; edit & create]
    *
-   * @param  int     poster ID or Admin ID.
+   * @param  int     posterId  Poster ID or Admin ID.
    *
-   * @return string  Action taken during the pocess; Blogger::CREATE Or Blogger::EDIT
+   * @return string            Action taken during the pocess; Blogger::CREATE Or Blogger::EDIT
    */
   private function handleSavePost(int $posterId=null): string {
     $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
