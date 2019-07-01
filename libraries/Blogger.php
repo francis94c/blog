@@ -66,6 +66,11 @@ class Blogger {
    */
   const ABORT = "abortAction";
   /**
+   * Blog post no action.
+   * @var string
+   */
+  const NO_ACTION = "no_action";
+  /**
    * Constructor
    * @param mixed $params associative array of parameters. See README.md
    */
@@ -219,10 +224,10 @@ class Blogger {
     $this->ci->load->helper("form");
     $data = array(
       "callback" => "Admin/token",
-      "type"     => $postId == null ? "create" : "edit",
+      "type"     => $postId === null ? "create" : "edit",
       "callback" => $callback
     );
-    if ($postId != null) {
+    if ($postId !== null) {
       $data["id"] = $postId;
       $post = $this->getPost($postId, false);
       $data["title"] = $post["title"];
@@ -271,18 +276,24 @@ class Blogger {
     } elseif ($action == "delete") {
       if ($this->ci->bmanager->deletePost($this->ci->security->xss_clean($this->ci->input->post("id")))) return self::DELETE;
     }
-    return false;
+    return self::NO_ACTION;
   }
   /**
-   * [getPosts get posts from the database by the given $page starting from the
-   * value of 1 and returns $limit number of rows.]
+   * getPosts get posts from the database by the given $page starting from the
+   * value of 1 and returns $limit number of rows.
+   *
    * @param  int     $page   Page number starting from 1.
+   *
    * @param  int     $limit  Number of posts to return.
-   * @param  boolean $filter if true, returns only published posts, if false
+   *
+   * @param  bool    $filter if true, returns only published posts, if false
    *                         return all posts. false by default.
-   * @return array Array of posts for a given page.
+   *
+   * @param  bool    $hits   If truem orders the returned posts by number of hits.
+   *
+   * @return array           Array of posts for a given page.
    */
-  public function getPosts($page, $limit, $filter=false, $hits=false) {
+  public function getPosts(int $page, int $limit, bool $filter=false, bool $hits=false): array {
     return $this->ci->bmanager->getPosts($page, $limit, $filter, $hits);
   }
   /**
