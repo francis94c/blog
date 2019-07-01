@@ -1,32 +1,74 @@
 <?php
+declare(strict_types=1);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Blogger {
 
+  /**
+   * Code Igniter Instance
+   * @var [type]
+   */
   private $ci;
-
+  /**
+   * Code Igniter DB Forge instance reference for simplicity.
+   * @var [type]
+   */
   private $dbforge;
-
+  /**
+   * Current Blog Table Name.
+   * @var [type]
+   */
   private $table_name;
-
+  /**
+   * String prefixed with ever blog name.
+   * @var string
+   */
   const TABLE_PREFIX = "blogger_posts";
-
+  /**
+   * Name of this package for simplicity.
+   * @var string
+   */
   const PACKAGE = "francis94c/blog";
-
+  /**
+   * Name of the dependent package for markdown.
+   * @var string
+   */
   const MARKDOWN_PACKAGE = "francis94c/ci-parsedown";
-
+  /**
+   * Blog post create action.
+   * @var string
+   */
   const CREATE = "create";
-
+  /**
+   * Blog post create and publish action.
+   * @var string
+   */
   const CREATE_AND_PUBLISH = "createAndPublish";
-
+  /**
+   * Blog post edit action.
+   * @var string
+   */
   const EDIT = "edit";
-
+  /**
+   * Blog post publish action.
+   * @var string
+   */
   const PUBLISH = "publish";
-
+  /**
+   * Blog post delete action.
+   * @var string
+   */
   const DELETE = "delete";
-
+  /**
+   * Blog post abort acction. This is an action taken internally when other
+   * actions fail.
+   * @var string
+   */
   const ABORT = "abortAction";
-
+  /**
+   * Constructor
+   * @param mixed $params associative array of parameters. See README.md
+   */
   function __construct($params=null) {
     $this->ci =& get_instance();
     $this->ci->load->database();
@@ -39,13 +81,19 @@ class Blogger {
   }
   /**
    * [install description]
-   * @param  [type] $adminTableName          [description]
-   * @param  [type] $adminTableName          [description]
-   * @param  [type] $adminIdColumnName       [description]
-   * @param  [type] $adminIdColumnConstraint [description]
-   * @return [type]                          [description]
+   * @param  string $blogName                Name of blog tabke to install.
+   *
+   * @param  string $adminTableName          Name of admi table to restrict post to.
+   *
+   * @param  string $adminIdColumnName       Name of the column to add a foreign
+   *                                         key constarint to the blog table with.
+   *
+   * @param  int    $adminIdColumnConstraint The column constarint or limit of
+   *                                         $adminIdColumnName.
+   *
+   * @return bool                            True on Success, False if Not.
    */
-  public function install($blogName=null, $adminTableName = null, $adminIdColumnName = null, $adminIdColumnConstraint = null) {
+  public function install(string $blogName=null, string $adminTableName=null, string $adminIdColumnName=null, int $adminIdColumnConstraint=null): bool {
     $blogName = $blogName == null ? $this->table_name : self::TABLE_PREFIX . "_" . $blogName;
     $this->ci->load->dbforge();
     $this->ci->dbforge->add_field("id");
@@ -93,11 +141,11 @@ class Blogger {
     return true;
   }
   /**
-   * [setBlog description]
-   * @param [type] $name [description]
+   * Sets the name of the current blog table.
+   * @param string $name name of a blog table.
    * @deprecated
    */
-  public function setName($name) {
+  public function setName(string $name): void {
     $this->table_name = self::TABLE_PREFIX . "_" . $name;
     $this->ci->bmanager->setBlogName($name != "" ? $name : null);
   }

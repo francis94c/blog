@@ -1,16 +1,17 @@
 <?php
+declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
 final class BlogTest extends TestCase {
 
   /**
-   * [private description]
+   * Code Igniter Instance.
    * @var [type]
    */
   private static $ci;
 
   /**
-   * [setUp description]
+   * Prerquisites for the Unit Tests.
    */
   public static function setUpBeforeClass(): void {
     self::$ci =& get_instance();
@@ -25,10 +26,10 @@ final class BlogTest extends TestCase {
     self::$ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
   }
   /**
-   * [testInstallBlog description]
-   * @return [type] [description]
+   * Test all functions relating to the installation of a blog. this is just the
+   * creation of tables under the hood.
    */
-  public function testInstallBlog() {
+  public function testInstallBlog(): void {
     $this->assertTrue(self::$ci->blogger->install("test_blog"), "Blog Installed Successfuly without admin ID constraint.");
     $this->assertTrue(self::$ci->db->table_exists(Blogger::TABLE_PREFIX . "_test_blog"));
     $fields = self::$ci->db->list_fields(Blogger::TABLE_PREFIX . "_test_blog");
@@ -49,21 +50,23 @@ final class BlogTest extends TestCase {
     $this->assertContains("date_published", $fields);
   }
   /**
-   * [testUI description]
-   * @return [type] [description]
+   * Test UI functions. This just out pust  HTML for manual inspection. The optimal
+   * inspection for this part is to use the Code Igniter Unit Testing system that
+   * outputs to a browser. See https://splint.cynobit/wiki
+   *
    * @depends testInstallBlog
    */
-  public function testUI() {
+  public function testUI(): void {
     $this->assertTrue(self::$ci->blogger->loadEditor("callback"), "Load Editor");
     self::$ci->blogger->setBlog("test_blog");
     $this->assertTrue(self::$ci->blogger->renderPostItems(null, null, null, 1, 0), "Test load empty posts set");
   }
   /**
-   * [testBlogSave description]
-   * @return [type] [description]
+   * Test the blog post saving functionality of the library.
+   * Create, Save, Publish, Create and Publish
    * @depends testInstallBlog
    */
-  public function testBlogSave() {
+  public function testBlogSave(): void {
     // No Admin.
     self::$ci->blogger->setBlog("test_blog");
     $_POST["action"] = "save";
@@ -114,16 +117,17 @@ final class BlogTest extends TestCase {
     $this->assertEquals(1, $post["published"]);
     $this->assertNotEquals(null, $post["date_published"]);
     $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(), "No 2 blog posts can have the same title.");
+    // TODO: With Admin.
   }
   /**
-   * [testDynamicFunctions description]
+   * Test Setters and Getters.
    */
   public function testDynamicFunctions(): void {
     self::$ci->blogger->setBlog("rocket_blog");
     $this->assertEquals(Blogger::TABLE_PREFIX . "_rocket_blog", self::$ci->blogger->getName(), "Blogger setBlog works.");
   }
   /**
-   * [tearDownAfterClass description]
+   * Clear and Free up persistent used resources for this test class.
    */
   public static function tearDownAfterClass(): void {
     self::$ci->db->empty_table("admins");
