@@ -48,6 +48,7 @@ final class BlogTest extends TestCase {
     $this->assertContains("slug", $fields);
     $this->assertContains("date_created", $fields);
     $this->assertContains("date_published", $fields);
+    $this->assertContains("poster_id", $fields);
   }
   /**
    * Test UI functions. This just out pust  HTML for manual inspection. The optimal
@@ -118,6 +119,57 @@ final class BlogTest extends TestCase {
     $this->assertNotEquals(null, $post["date_published"]);
     $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(), "No 2 blog posts can have the same title.");
     // TODO: With Admin.
+    self::$ci->blogger->setBlog("admin_test_blog");
+    $_POST["action"] = "save";
+    $_POST["title"] = "Admin Hello Title";
+    $_POST["editor"] = "The Quick Brown Fox Jumped over the Lazy Dog.";
+    unset($_POST["id"]);
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE);
+    $_POST["editor"] = "The Quick Brown Fox Jumped over the Lazy Dog. Again.";
+    $_POST["id"] = 1;
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::EDIT);
+    $this->assertTrue(self::$ci->blogger->renderPost("Admin-Hello-Title", null));
+    $post = self::$ci->blogger->getPost("Admin-Hello-Title", false);
+    $this->assertTrue(is_array($post));
+    $this->assertArrayHasKey("id", $post);
+    $this->assertArrayHasKey("title", $post);
+    $this->assertArrayHasKey("content", $post);
+    $this->assertArrayHasKey("published", $post);
+    $this->assertArrayHasKey("date_published", $post);
+    $this->assertArrayHasKey("slug", $post);
+    $this->assertEquals(1, $post["id"], "Assert Post ID");
+    $this->assertEquals("Admin Hello Title", $post["title"], "Assert Post Title");
+    $this->assertEquals("The Quick Brown Fox Jumped over the Lazy Dog. Again.", $post["content"]);
+    $this->assertEquals("Admin-Hello-Title", $post["slug"]);
+    $this->assertEquals(0, $post["published"]);
+    $this->assertEquals(null, $post["date_published"]);
+    $_POST["action"] = "publish";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::PUBLISH);
+    $post = self::$ci->blogger->getPost("Admin-Hello-Title", false);
+    $this->assertTrue(is_array($post));
+    $this->assertEquals(1, $post["published"]);
+    $this->assertNotEquals(null, $post["date_published"]);
+    $_POST["action"] = "createAndPublish";
+    $_POST["title"] = "Admin Hello Title 2";
+    $_POST["editor"] = "Create and Published Post.";
+    unset($_POST["id"]);
+    $this->assertEquals(Blogger::CREATE_AND_PUBLISH, self::$ci->blogger->savePost(1));
+    $post = self::$ci->blogger->getPost("Admin-Hello-Title-2", false);
+    $this->assertTrue(is_array($post));
+    $this->assertArrayHasKey("id", $post);
+    $this->assertArrayHasKey("title", $post);
+    $this->assertArrayHasKey("content", $post);
+    $this->assertArrayHasKey("published", $post);
+    $this->assertArrayHasKey("date_published", $post);
+    $this->assertArrayHasKey("slug", $post);
+    $this->assertArrayHasKey("poster_id", $post);
+    $this->assertEquals(2, $post["id"], "Assert Post ID");
+    $this->assertEquals("Admin Hello Title 2", $post["title"], "Assert Post Title");
+    $this->assertEquals("Create and Published Post.", $post["content"]);
+    $this->assertEquals("Admin-Hello-Title-2", $post["slug"]);
+    $this->assertEquals(1, $post["published"]);
+    $this->assertNotEquals(null, $post["date_published"]);
+    $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(1), "No 2 blog posts can have the same title.");
   }
   /**
    * Test Setters and Getters.
@@ -130,12 +182,13 @@ final class BlogTest extends TestCase {
    * Clear and Free up persistent used resources for this test class.
    */
   public static function tearDownAfterClass(): void {
-    self::$ci->db->empty_table("admins");
     self::$ci->db->empty_table("blogger_posts_test_blog");
     self::$ci->db->empty_table("blogger_posts_admin_test_blog");
+    self::$ci->db->empty_table("admins");
     self::$ci->load->dbforge();
-    self::$ci->dbforge->drop_table("admins");
     self::$ci->dbforge->drop_table("blogger_posts_test_blog");
     self::$ci->dbforge->drop_table("blogger_posts_admin_test_blog");
+    self::$ci->dbforge->drop_table("admins");
+    self::$ci->db->close();
   }
 }

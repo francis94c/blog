@@ -130,17 +130,13 @@ class Blogger {
         "unique"     => true
       )
     );
+    $this->ci->dbforge->add_field($fields);
     $constrain = $adminTableName !== null && $adminIdColumnName !== null &&
     $adminIdColumnConstraint !== null;
     if ($constrain) {
-      $fields["poster_id"] = array(
-        "type"       => "INT",
-        "constraint" => $adminIdColumnConstraint
-      );
       $this->ci->dbforge->add_field(
-        "FOREIGN KEY (poster_id) REFERENCES $adminTableName($adminIdColumnName)");
+        "poster_id INT($adminIdColumnConstraint), FOREIGN KEY (poster_id) REFERENCES $adminTableName($adminIdColumnName)");
     }
-    $this->ci->dbforge->add_field($fields);
     $this->ci->dbforge->add_field("date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP");
     $attributes = array('ENGINE' => 'InnoDB');
     if (!$this->ci->dbforge->create_table($blogName, true, $attributes)) return false;
@@ -252,14 +248,7 @@ class Blogger {
   public function savePost(int $posterId=null): string {
     $action = $this->ci->security->xss_clean($this->ci->input->post("action"));
     if ($action == "save") {
-      $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
-      if ($id != "") {
-        $this->ci->bmanager->savePost($this->ci->input->post("id"), $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
-        return self::EDIT;
-      } else {
-        $this->ci->bmanager->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
-        return self::CREATE;
-      }
+      return $this->handleSavePost();
     } elseif ($action == "publish" || $action == "createAndPublish") {
       if ($action == "publish") {
         $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
@@ -277,6 +266,20 @@ class Blogger {
       if ($this->ci->bmanager->deletePost($this->ci->security->xss_clean($this->ci->input->post("id")))) return self::DELETE;
     }
     return self::NO_ACTION;
+  }
+  /**
+   * [handleSavePost description]
+   * @return string [description]
+   */
+  private function handleSavePost(): string {
+    $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
+    if ($id != "") {
+      if (!$this->ci->bmanager->savePost($this->ci->input->post("id"), $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId)) return self::ABORT;
+      return self::EDIT;
+    } else {
+      if ($this->ci->bmanager->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId) == 0) return self::ABORT;
+      return self::CREATE;
+    }
   }
   /**
    * getPosts get posts from the database by the given $page starting from the

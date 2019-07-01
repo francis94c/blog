@@ -31,16 +31,20 @@ class BlogManager extends CI_Model {
   /**
    * [createPost creates a post with the given $title and $content in the
    * database.]
+   *
    * @param  string $title   The title of the post.
+   *
    * @param  string $content The content of the post.
+   *
    * @param  int    $adminId Optional, the id of the poster. this is needed if
    *                         you provided an admins table name during blog
    *                         installation.
-   * @return boolean         Returns the id of the newly created post in the
-   *                         database. Returns false if the post couldn't be
+   *
+   * @return 0               Returns the id of the newly created post in the
+   *                         database. Returns 0 if the post couldn't be
    *                         created.
    */
-  function createPost($title, $content, $adminId=null) {
+  function createPost(string $title, string $content, int $adminId=null): int {
     $this->ci->load->helper("url");
     $data = array(
       "title"   => $title,
@@ -48,9 +52,9 @@ class BlogManager extends CI_Model {
       "slug"    => url_title($title)
     );
     if (is_numeric($title)) $data["slug"] = "_" . $data["slug"];
-    if ($adminId != null) $data["poster_id"] = $adminId;
+    if ($adminId !== null) $data["poster_id"] = $adminId;
     if ($this->db->insert($this->table_name, $data)) return $this->db->insert_id();
-    return false;
+    return 0;
   }
   /**
    * [createAndPublish description]
@@ -112,7 +116,7 @@ class BlogManager extends CI_Model {
    * @param  string $content New content of the post.
    * @return bool            True on success, False if not.
    */
-  function savePost($postId, $title, $content) {
+  function savePost($postId, $title, $content): bool {
     $data = array (
       "title"   => $title,
       "content" => $content,
