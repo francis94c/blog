@@ -324,10 +324,10 @@ class Blogger {
    * @return bool             [description]
    */
   public function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false, $slug=true) {
-    if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blog", $blogger);
+    if ($view === null || $empty_view === null) $this->ci->load->bind("francis94c/blog", $blogger);
     $posts = $this->getPosts($page, $limit, $filter, $hits);
     if (count($posts) == 0) {
-      if ($empty_view == null) { $blogger->load->view("empty"); } else {
+      if ($empty_view === null) { $blogger->load->view("empty"); } else {
         $this->ci->load->view($empty_view);
         return true;
       }
@@ -337,7 +337,7 @@ class Blogger {
       $post["callback"] = $callback != null ? trim($callback, "/") . "/" . ($slug ? $post["slug"] : $post["id"]) : "";
       $post["filter"] = $filter;
       $post["content"] = $this->ci->parsedown->text(ellipsize($post["content"], 300));
-      if ($view == null) {$blogger->load->view("post_list_item", $post); } else {
+      if ($view === null) {$blogger->load->view("post_list_item", $post); } else {
         $this->ci->load->view($view, $post);
       }
     }
