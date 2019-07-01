@@ -247,31 +247,29 @@ class Blogger {
    */
   public function savePost(int $posterId=null): string {
     $action = $this->ci->security->xss_clean($this->ci->input->post("action"));
-    if ($action == "save") {
-      return $this->handleSavePost();
-    } elseif ($action == "publish" || $action == "createAndPublish") {
-      if ($action == "publish") {
-        $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
-        if ($id == "") return self::ABORT;
-        $this->ci->bmanager->savePost($id, $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId);
-        $this->ci->bmanager->publishPost($id, true);
-        return self::PUBLISH;
-      } else {
-        if ($this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId) !== false) {
-          return self::CREATE_AND_PUBLISH;
-        }
+    switch ($action) {
+      case "save":
+        return $this->handleSavePost($posterId);
+      case "publish":
+        return $this->handlePublishPost($posterId);
+      case "createAndPublish":
+        if ($this->ci->bmanager->createAndPublishPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId) !== false) return self::CREATE_AND_PUBLISH;
         return self::ABORT;
-      }
-    } elseif ($action == "delete") {
-      if ($this->ci->bmanager->deletePost($this->ci->security->xss_clean($this->ci->input->post("id")))) return self::DELETE;
+      case "delete":
+        if ($this->ci->bmanager->deletePost($this->ci->security->xss_clean($this->ci->input->post("id")))) return self::DELETE;
+        return self::ABORT;
+      default:
+        return self::NO_ACTION;
     }
-    return self::NO_ACTION;
   }
   /**
-   * [handleSavePost description]
-   * @return string [description]
+   * [handleSavePost handles save pot actions; edit & create]
+   *
+   * @param  int     poster ID or Admin ID.
+   *
+   * @return string  Action taken during the pocess; Blogger::CREATE Or Blogger::EDIT
    */
-  private function handleSavePost(): string {
+  private function handleSavePost(int $posterId=null): string {
     $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
     if ($id != "") {
       if (!$this->ci->bmanager->savePost($this->ci->input->post("id"), $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId)) return self::ABORT;
@@ -280,6 +278,21 @@ class Blogger {
       if ($this->ci->bmanager->createPost($this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId) == 0) return self::ABORT;
       return self::CREATE;
     }
+  }
+  /**
+   * [handlePublishPost handles the publishing of a post using inputs from the
+   *  submited form.]
+   *
+   * @param  int    $posterId ID of the publishing Admin.
+
+   * @return string           Action reached while processing form inputs.
+   */
+  private function handlePublishPost(int $posterId=null): string {
+    $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
+    if ($id == "") return self::ABORT;
+    if (!$this->ci->bmanager->savePost($id, $this->ci->security->xss_clean($this->ci->input->post("title")), $this->ci->security->xss_clean($this->ci->input->post("editor")), $posterId)) return self::ABORT;
+    if (!$this->ci->bmanager->publishPost($id, true)) return self::ABORT;
+    return self::PUBLISH;
   }
   /**
    * getPosts get posts from the database by the given $page starting from the
