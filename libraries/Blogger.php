@@ -315,15 +315,27 @@ class Blogger {
   /**
    * [renderPosts render post items by page number, max page count, and specified
    * view files.]
-   * @param  string  $view       [description]
-   * @param  string  $empty_view [description]
-   * @param  int     $page       [description]
-   * @param  int     $limit      [description]
-   * @param  boolean $filter     [description]
-   * @param  boolean $hits       [description]
-   * @return bool             [description]
+   * @param  string  $view       Custom view per post summary to use, from
+   *                             end-user application context.
+   *
+   * @param  string  $callback   Callback URI that should render a full post for
+   *                             each of the post items. This callback URI will
+   *                             have the ID of each respective post, appended to
+   *                             the end of it for each of the post itesm.
+   *
+   * @param  string  $empty_view View to load if blog has no posts, form end-user context.
+   *
+   * @param  int     $page       Page Number of pot list.
+   *
+   * @param  int     $limit      Max post summary per page.
+   *
+   * @param  boolean $filter     If true, ommits un-published posts.
+   *
+   * @param  boolean $hits       If true, orders returned posts by hits.
+   *
+   * @return bool                True if successful, false if not.
    */
-  public function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false, $slug=true) {
+  public function renderPostItems(string $view=null, string $callback=null, string $empty_view=null, int $page=1, int $limit=5, bool $filter=false, bool $hits=false, bool $slug=true): bool {
     if ($view === null || $empty_view === null) $this->ci->load->bind("francis94c/blog", $blogger);
     $posts = $this->getPosts($page, $limit, $filter, $hits);
     if (count($posts) == 0) {
@@ -344,12 +356,15 @@ class Blogger {
     return true;
   }
   /**
-   * [getRecentPosts description]
-   * @param  integer $limit  [description]
-   * @param  boolean $filter [description]
-   * @return [type]          [description]
+   * [getRecentPosts gets most recent post, limits number returned with $limit.]
+   *
+   * @param  int  $limit  Number of Posts.
+   *
+   * @param  bool $filter If true, returns only published posts.
+   *
+   * @return array          [description]
    */
-  public function getRecentPosts($limit=5, $filter=false) {
+  public function getRecentPosts($limit=5, $filter=false): array {
     return $this->ci->bmanager->getRecentPosts($limit, $filter);
   }
   /**
