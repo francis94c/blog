@@ -265,9 +265,9 @@ class Blogger {
   /**
    * [handleSavePost handles save pot actions; edit & create]
    *
-   * @param  int     posterId  Poster ID or Admin ID.
+   * @param  int     $posterId  Poster ID or Admin ID.
    *
-   * @return string            Action taken during the pocess; Blogger::CREATE Or Blogger::EDIT
+   * @return string             Action taken during the pocess; Blogger::CREATE Or Blogger::EDIT
    */
   private function handleSavePost(int $posterId=null): string {
     $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
@@ -313,14 +313,15 @@ class Blogger {
     return $this->ci->bmanager->getPosts($page, $limit, $filter, $hits);
   }
   /**
-   * [renderPosts description]
-   * @param  [type]  $view       [description]
-   * @param  [type]  $empty_view [description]
-   * @param  [type]  $page       [description]
-   * @param  [type]  $limit      [description]
+   * [renderPosts render post items by page number, max page count, and specified
+   * view files.]
+   * @param  string  $view       [description]
+   * @param  string  $empty_view [description]
+   * @param  int     $page       [description]
+   * @param  int     $limit      [description]
    * @param  boolean $filter     [description]
    * @param  boolean $hits       [description]
-   * @return [type]              [description]
+   * @return bool             [description]
    */
   public function renderPostItems($view=null, $callback=null, $empty_view=null, $page=1, $limit=5, $filter=false, $hits=false, $slug=true) {
     if ($view == null || $empty_view == null) $this->ci->load->bind("francis94c/blog", $blogger);
