@@ -94,7 +94,7 @@ class Blogger {
    * @return bool                            True on Success, False if Not.
    */
   public function install(string $blogName=null, string $adminTableName=null, string $adminIdColumnName=null, int $adminIdColumnConstraint=null): bool {
-    $blogName = $blogName == null ? $this->table_name : self::TABLE_PREFIX . "_" . $blogName;
+    $blogName = $blogName === null ? $this->table_name : self::TABLE_PREFIX . "_" . $blogName;
     $this->ci->load->dbforge();
     $this->ci->dbforge->add_field("id");
     $fields = array(
