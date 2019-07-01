@@ -346,7 +346,7 @@ class Blogger {
     }
     $this->ci->load->helper("text");
     foreach ($posts as $post) {
-      $post["callback"] = $callback != null ? trim($callback, "/") . "/" . ($slug ? $post["slug"] : $post["id"]) : "";
+      $post["callback"] = $callback !== null ? trim($callback, "/") . "/" . ($slug ? $post["slug"] : $post["id"]) : "";
       $post["filter"] = $filter;
       $post["content"] = $this->ci->parsedown->text(ellipsize($post["content"], 300));
       if ($view === null) {$blogger->load->view("post_list_item", $post); } else {
