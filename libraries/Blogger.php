@@ -6,17 +6,17 @@ class Blogger {
 
   /**
    * Code Igniter Instance
-   * @var [type]
+   * @var object
    */
   private $ci;
   /**
    * Code Igniter DB Forge instance reference for simplicity.
-   * @var [type]
+   * @var object
    */
   private $dbforge;
   /**
    * Current Blog Table Name.
-   * @var [type]
+   * @var string
    */
   private $table_name;
   /**
