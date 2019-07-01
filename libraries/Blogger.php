@@ -80,7 +80,8 @@ class Blogger {
     $this->ci->load->helper("url");
   }
   /**
-   * [install description]
+   * Installs a blog with the given table name and paramters.
+   *
    * @param  string $blogName                Name of blog tabke to install.
    *
    * @param  string $adminTableName          Name of admi table to restrict post to.
@@ -142,7 +143,9 @@ class Blogger {
   }
   /**
    * Sets the name of the current blog table.
+   *
    * @param string $name name of a blog table.
+   *
    * @deprecated
    */
   public function setName(string $name): void {
@@ -151,6 +154,7 @@ class Blogger {
   }
   /**
    * Same as the deprecated setName. Sets the name of the current blog table.
+   *
    * @param string $blog [description]
    */
   public function setBlog(string $blog): void {
@@ -165,37 +169,52 @@ class Blogger {
     return $this->table_name;
   }
   /**
-   * [loadHeaderScripts description]
-   * @param  boolean $w3css [description]
-   * @return [type]         [description]
+   * Loads/echoes the client side scripts needed for the blog to render it's
+   * post editor and other views.
+   *
+   * @param  bool $w3css If true, additionally loads the W3.CSS file for additional
+   *                     styling. Defaults internally on Blogmanager to true
    */
-  private function loadScripts($w3css) {
+  private function loadScripts(bool $w3css): void {
     $this->ci->load->splint(self::PACKAGE, "-header_scripts", array(
       "w3css" => $w3css
     ));
   }
   /**
-   * [w3css description]
-   * @return [type] [description]
+   * Returns the W3.CSS client side script loading tag.
+   * @return string W3.CSS link tag.
    */
-  public function w3css() {
+  public function w3css(): string {
     return "<link rel=\"stylesheet\" href=\"https://www.w3schools.com/w3css/4/w3.css\">";
   }
   /**
-   * [fontsAwesome description]
-   * @return [type] [description]
+   * Returns the Fonts Awesome CSS link loading tag.
+   * @return string Fonts Awesome CSS link loading tag.
    */
-  public function fontsAwesome() {
+  public function fontsAwesome(): string {
     return "<link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.3.1/css/all.css\"";
   }
   /**
-   * [loadEditor description]
-   * @param  [type]  $callback [description]
-   * @param  [type]  $postId   [description]
-   * @param  boolean $w3css    [description]
-   * @return [type]            [description]
+   * Echoes to the browser a 'SimpleMDE' markdown editor for editing post
+   * contents, as part of a form.
+   *
+   * @param  string  $callback The URI callback that will be passed to the Code
+   *                           Igniter form_open method when outputing the form.
+   *                           The call back is where you should read the contents
+   *                           of the submited form.
+   *                           The contents of the form should be read or handled
+   *                           by a call to the 'savePost($posterId)' function.
+   *                           You don't need to worry about reading it your self.
+   *
+   * @param  int     $postId   (Optional) The ID of the post whose content should
+   *                           be present in the editor when loaded. provide this
+   *                           parameter when you want to edit a post.
+   *
+   * @param  bool    $w3css    If true, echoes the W3.CSS link tag as well.
+   *
+   * @return bool              True  if sucessfull without errors, false if not.
    */
-  public function loadEditor($callback, $postId=null, $w3css=true) {
+  public function loadEditor(string $callback, int $postId=null, bool $w3css=true): bool {
     $this->loadScripts($w3css);
     $this->ci->load->helper("form");
     $data = array(
@@ -213,11 +232,19 @@ class Blogger {
     return true;
   }
   /**
-   * [savePost description]
-   * @param  [type] $posterId [description]
-   * @return [type]           [description]
+   * Handles form data from the Editor loaded by a call to 'loadEditor'.
+   * Traditionally, this function is to be called ath the controller function
+   * specified by the callback URI provided to the loadEditor method.
+   *
+   * @param  int $posterId ID of the poster. A valid admin ID from the table
+   *                       specified as a foreign key constraint during the
+   *                       installation of the selected blog.
+   *
+   * @return string        The final action reached in processing the form
+   *                       inputs. These are public string constants declared in
+   *                       this file.
    */
-  public function savePost($posterId=null) {
+  public function savePost(int $posterId=null): string {
     $action = $this->ci->security->xss_clean($this->ci->input->post("action"));
     if ($action == "save") {
       $id = $this->ci->security->xss_clean($this->ci->input->post("id"));
