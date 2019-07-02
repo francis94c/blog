@@ -290,7 +290,7 @@ final class BlogEngineTest extends TestCase {
     $_POST["title"] = "Test Filter";
     $_POST["editor"] = "The Quick Brown Fox Jumped over the Lazy Dog.";
     unset($_POST["id"]);
-    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE);
+    $this->assertEquals(Blogger::CREATE, self::$ci->blogger->savePost(1));
     $this->assertCount(2, self::$ci->blogger->getRecentPosts(5, true));
   }
   // TODO: Test Hits
@@ -315,6 +315,53 @@ final class BlogEngineTest extends TestCase {
     // Test Custom View.
     $this->expectOutputRegex("/BLOGAdmin Hello TitleCONTENT<p>The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/p>/");
     self::$ci->blogger->renderPost($post, "../splints/" . self::PACKAGE . "/unit_tests/views/test_post_item");
+  }
+  /**
+   * Test Posts Vount and Blog Delete.
+   *
+   * @testdox Test Posts Count and Blog Delete.
+   *
+   * @depends testRenderPost
+   */
+  public function testPostCountAndPostDelete(): void {
+    $this->assertEquals(2, self::$ci->blogger->getPostsCount());
+    $this->assertEquals(3, self::$ci->blogger->getPostsCount(false));
+    $_POST["action"] = "delete";
+    unset($_POST["title"]);
+    unset($_POST["editor"]);
+    // ID maybe = 4 due to failed attempt in creating posts with identical slug (MySQL Doc).
+    $_POST["id"] = self::$ci->blogger->getPost("Test-Filter", false)["id"];
+    $this->assertEquals(Blogger::DELETE, self::$ci->blogger->savePost(1));
+    $this->assertEquals(2, self::$ci->blogger->getPostsCount(false));
+  }
+  /**
+   * Test No Action
+   *
+   * @testdox Test No Editor Action. √
+   *
+   * @depends testPostCountAndPostDelete
+   */
+  public function testNoPostAction(): void {
+    $_POST["action"] = "absolutely_crap";
+    $this->assertEquals(Blogger::NO_ACTION, self::$ci->blogger->savePost(1));
+  }
+  /**
+   * Test Render Post items
+   *
+   * @testdox Test Rendering of Post Items. √
+   *
+   * @depends testNoPostAction
+   */
+  public function testRenderPostItems(): void {
+    // === Collect Output ===
+    $this->setOutputCallback(function () {});
+    $this->assertTrue(self::$ci->blogger->renderPostItems("../splints/" . self::PACKAGE . "/unit_tests/views/test_post_card_item", "the_gunners"));
+    $o = $this->getActualOutput();
+    // ==/ Collect Output ===
+
+    $this->assertRegExp("/A CARD HERE Admin Hello Title TOKEN <p>The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/p> ID = 1/", $o);
+    $this->assertRegExp("/A CARD HERE Admin Hello Title 2 TOKEN <p>Create and Published Post.<\/p> ID = 2/", $o);
+    $this->assertRegExp("/the_gunners/", $o);    
   }
   /**
    * Test Setters and Getters.

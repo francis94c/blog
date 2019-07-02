@@ -1,0 +1,1 @@
+A CARD HERE <?=$title?> TOKEN <?=$content?> ID = <?=$id?> <?=$callback?>

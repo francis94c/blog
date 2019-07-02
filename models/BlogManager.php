@@ -189,9 +189,10 @@ class BlogManager extends CI_Model {
    * [getPostsCount get the total number of posts in the database.]
    * @return [type] [description]
    */
-  function getPostsCount() {
+  function getPostsCount(bool $filter=true): int {
+    if ($filter) $this->db->where("published", 1);
     $this->db->select("COUNT(title) as posts");
-    return $this->db->get($this->table_name)->result()[0]->posts;
+    return (int) $this->db->get($this->table_name)->result()[0]->posts;
   }
   /**
    * [deletePost description]

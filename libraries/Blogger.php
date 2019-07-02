@@ -413,10 +413,12 @@ class Blogger {
    *
    * TODO: Get for a given blog.
    *
-   * @return int Posts count.
+   * @param  bool If true, counts only published posts. True by default.
+   *
+   * @return int  Posts count.
    */
-  public function getPostsCount(): int {
-    return $this->ci->bmanager->getPostsCount();
+  public function getPostsCount($filter=true): int {
+    return $this->ci->bmanager->getPostsCount($filter);
   }
   /**
    * [getPost description]
