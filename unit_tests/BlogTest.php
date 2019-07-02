@@ -31,6 +31,18 @@ final class BlogEngineTest extends TestCase {
     self::$ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
   }
   /**
+   * Test Constructor
+   *
+   * @tesdox Test Constructor. √
+   */
+  public function testConstructor(): void {
+    $params = [
+      "name" => "ronaldo"
+    ];
+    self::$ci->load->splint(self::PACKAGE, "+Blogger", $params, "messi");
+    $this->assertEquals(Blogger::TABLE_PREFIX . "_ronaldo", self::$ci->messi->getName());
+  }
+  /**
    * Test all functions relating to the installation of a blog. this is just the
    * creation of tables under the hood.
    *
