@@ -65,9 +65,10 @@ final class BlogTest extends TestCase {
   /**
    * Test the blog post saving functionality of the library.
    * Create, Save, Publish, Create and Publish
+   *
    * @depends testInstallBlog
    */
-  public function testBlogSave(): void {
+  public function testBlogSaveNoAdmin(): void {
     // No Admin.
     self::$ci->blogger->setBlog("test_blog");
     $_POST["action"] = "save";
@@ -118,7 +119,13 @@ final class BlogTest extends TestCase {
     $this->assertEquals(1, $post["published"]);
     $this->assertNotEquals(null, $post["date_published"]);
     $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(), "No 2 blog posts can have the same title.");
-    // TODO: With Admin.
+  }
+  /**
+   * Test blogSave with Admin.
+   *
+   * @depends testBlogSaveNoAdmin
+   */
+  public function testBlogSaveWithAdmin(): void {
     self::$ci->blogger->setBlog("admin_test_blog");
     $_POST["action"] = "save";
     $_POST["title"] = "Admin Hello Title";
@@ -170,6 +177,48 @@ final class BlogTest extends TestCase {
     $this->assertEquals(1, $post["published"]);
     $this->assertNotEquals(null, $post["date_published"]);
     $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(1), "No 2 blog posts can have the same title.");
+  }
+  /**
+   * Test for Recent Post.
+   */
+  public function testGetRecentPosts():void {
+    // Set Blog.
+    self::$ci->blogger->setBlog("admin_test_blog");
+    // Check Blog Post Counts for different alues of limit.
+    $this->assertCount(2, self::$ci->blogger->getRecentPosts(0));
+    $this->assertCount(1, self::$ci->blogger->getRecentPosts(1));
+    $this->assertCount(2, self::$ci->blogger->getRecentPosts(2));
+    $this->assertCount(2, self::$ci->blogger->getRecentPosts(5));
+    $this->assertCount(2, self::$ci->blogger->getRecentPosts());
+    // Validate contents of first post.
+    $posts = self::$ci->blogger->getRecentPosts(5);
+    $this->assertArrayHasKey("id", $posts[0]);
+    $this->assertArrayHasKey("title", $posts[0]);
+    $this->assertArrayHasKey("content", $posts[0]);
+    $this->assertArrayHasKey("published", $posts[0]);
+    $this->assertArrayHasKey("date_published", $posts[0]);
+    $this->assertArrayHasKey("slug", $posts[0]);
+    $this->assertArrayHasKey("poster_id", $posts[0]);
+    $this->assertEquals(2, $posts[0]["id"], "Assert Post ID");
+    $this->assertEquals("Admin Hello Title 2", $posts[0]["title"], "Assert Post Title");
+    $this->assertEquals("Create and Published Post.", $posts[0]["content"]);
+    $this->assertEquals("Admin-Hello-Title-2", $posts[0]["slug"]);
+    $this->assertEquals(1, $posts[0]["published"]);
+    $this->assertNotEquals(null, $posts[0]["date_published"]);
+    // Validate contents of second post
+    $this->assertArrayHasKey("id", $posts[1]);
+    $this->assertArrayHasKey("title", $posts[1]);
+    $this->assertArrayHasKey("content", $posts[1]);
+    $this->assertArrayHasKey("published", $posts[1]);
+    $this->assertArrayHasKey("date_published", $posts[1]);
+    $this->assertArrayHasKey("slug", $posts[1]);
+    $this->assertArrayHasKey("poster_id", $posts[1]);
+    $this->assertEquals(1, $posts[1]["id"], "Assert Post ID");
+    $this->assertEquals("Admin Hello Title", $posts[1]["title"], "Assert Post Title");
+    $this->assertEquals("The Quick Brown Fox Jumped over the Lazy Dog. Again.", $posts[1]["content"]);
+    $this->assertEquals("Admin-Hello-Title", $posts[1]["slug"]);
+    $this->assertEquals(1, $posts[1]["published"]);
+    $this->assertNotEquals(null, $posts[0]["date_published"]);
   }
   /**
    * Test Setters and Getters.
