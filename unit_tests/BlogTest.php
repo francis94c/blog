@@ -320,7 +320,7 @@ final class BlogEngineTest extends TestCase {
    */
   public function testClientSideScripts(): void {
     $this->assertRegExp("/<link rel=\"stylesheet\" href=\"https:\/\/www\.w3schools\.com\/w3css\/4\/w3.css\">/", self::$ci->blogger->w3css());
-    $this->expectOutputRegex("/<link rel=\"stylesheet\" href=\"https:\/\/use.fontawesome.com\/releases\/v5.3.1\/css\/all.css\"\/>/", self::$ci->blogger->fontsAwesome());
+    $this->assertRegExp("/<link rel=\"stylesheet\" href=\"https:\/\/use.fontawesome.com\/releases\/v5.3.1\/css\/all.css\"\/>/", self::$ci->blogger->fontsAwesome());
   }
   /**
    * Clear and Free up persistent used resources for this test class.
