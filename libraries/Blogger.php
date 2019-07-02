@@ -193,7 +193,7 @@ class Blogger {
    * @return string Fonts Awesome CSS link loading tag.
    */
   public function fontsAwesome(): string {
-    return "<link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.3.1/css/all.css\"";
+    return "<link rel=\"stylesheet\" href=\"https://use.fontawesome.com/releases/v5.3.1/css/all.css\"/>";
   }
   /**
    * Echoes to the browser a 'SimpleMDE' markdown editor for editing post
