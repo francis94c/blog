@@ -180,10 +180,10 @@ final class BlogTest extends TestCase {
   }
   /**
    * Test for Recent Post.
+   *
+   * @depends testBlogSaveWithAdmin
    */
   public function testGetRecentPosts():void {
-    // Set Blog.
-    self::$ci->blogger->setBlog("admin_test_blog");
     // Check Blog Post Counts for different alues of limit.
     $this->assertCount(2, self::$ci->blogger->getRecentPosts(0));
     $this->assertCount(1, self::$ci->blogger->getRecentPosts(1));
@@ -219,6 +219,33 @@ final class BlogTest extends TestCase {
     $this->assertEquals("Admin-Hello-Title", $posts[1]["slug"]);
     $this->assertEquals(1, $posts[1]["published"]);
     $this->assertNotEquals(null, $posts[0]["date_published"]);
+    // Test Filter.
+    $_POST["action"] = "save";
+    $_POST["title"] = "Test Filter";
+    $_POST["editor"] = "The Quick Brown Fox Jumped over the Lazy Dog.";
+    unset($_POST["id"]);
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE);
+    $this->assertCount(2, self::$ci->blogger->getRecentPosts(5, true));
+  }
+  // TODO: Test Hits
+  /**
+   * Test Single Post Rendering
+   *
+   * @depends testGetRecentPosts
+   */
+  public function testRenderPost(): void {
+    // Default Post View
+    // Test Content.
+    $post = self::$ci->blogger->getPost("Admin-Hello-Title", false);
+    $this->expectOutputRegex("/<h1><b>Admin Hello Title<\/b><\/h1>/");
+    self::$ci->blogger->renderPost($post);
+    $this->expectOutputRegex("/<p>The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/p>/");
+    self::$ci->blogger->renderPost($post);
+    $this->expectOutputRegex("/<div class=\"w3-padding\">/");
+    self::$ci->blogger->renderPost($post);
+    // Test MarkUp
+    $this->expectOutputRegex("/<div class=\"w3-padding\">([\w(\r|\n|\r\n) <>\/.]+)<\/div>/");
+    self::$ci->blogger->renderPost($post);
   }
   /**
    * Test Setters and Getters.
