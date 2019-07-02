@@ -8,7 +8,7 @@
 	verbose="true"
 	testdox="true">
 	<testsuites>
-		<testsuite name="My Test Suite">
+		<testsuite name="Blog Test Suite">
 			<file>travis-splint-0.0.2/application/splints/francis94c/blog/unit_tests/BlogTest.php</file>
 		</testsuite>
 	</testsuites>

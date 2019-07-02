@@ -2,7 +2,7 @@
 declare(strict_types=1);
 use PHPUnit\Framework\TestCase;
 
-final class BlogTest extends TestCase {
+final class BlogEngineTest extends TestCase {
 
   /**
    * Code Igniter Instance.
@@ -33,6 +33,8 @@ final class BlogTest extends TestCase {
   /**
    * Test all functions relating to the installation of a blog. this is just the
    * creation of tables under the hood.
+   *
+   * @testdox Test Installation of Blog with and Without Admin Constraints. √
    */
   public function testInstallBlog(): void {
     $this->assertTrue(self::$ci->blogger->install("test_blog"), "Blog Installed Successfuly without admin ID constraint.");
@@ -56,20 +58,55 @@ final class BlogTest extends TestCase {
     $this->assertContains("poster_id", $fields);
   }
   /**
+   * Test Empty Blog.
+   *
+   * @depends testInstallBlog
+   *
+   * @testdox Test HTML Output When no Post is Present. √
+   */
+  public function testEmptyBlog(): void {
+    self::$ci->blogger->setBlog("test_blog");
+    $this->setOutputCallback(function ($output) {
+      $this->assertRegExp("/<h3 class=\"w3-center w3-margin\">No Posts.<\/h3>/", $output);
+      $this->assertRegExp("/<div class=\"w3-padding\">/", $output);
+    });
+    $this->assertTrue(self::$ci->blogger->renderPostItems(null, null, null, 1, 0), "Test load empty posts set");
+  }
+  /**
    * Test UI functions. This just out pust  HTML for manual inspection. The optimal
    * inspection for this part is to use the Code Igniter Unit Testing system that
    * outputs to a browser. See https://splint.cynobit/wiki
    *
    * @depends testInstallBlog
+   *
+   * @testdox Test Editor HTML Output. √
    */
-  public function testUI(): void {
-    $this->assertTrue(self::$ci->blogger->loadEditor("callback"), "Load Editor");
-    self::$ci->blogger->setBlog("test_blog");
-    $this->assertTrue(self::$ci->blogger->renderPostItems(null, null, null, 1, 0), "Test load empty posts set");
+  public function testEditor(): void {
+
+    // === Collect Output ===
+    $this->setOutputCallback(function () {});
+    $this->assertTrue(self::$ci->blogger->loadEditor("my_callback")); // Outputs Editor HTML.
+    $o = $this->getActualOutput();
+    // ==/ Collect Output ===
+
+    $this->assertRegExp("/<link rel=\"stylesheet\" href=\"https:\/\/www\.w3schools\.com\/w3css\/4\/w3.css\">/", $o);
+    $this->assertRegExp("/<link rel=\"stylesheet\" href=\"https:\/\/cdn.jsdelivr.net\/simplemde\/latest\/simplemde.min.css\">/", $o);
+    $this->assertRegExp("/<script src=\"https:\/\/cdn.jsdelivr.net\/simplemde\/latest\/simplemde.min.js\"><\/script>/", $o);
+    $this->assertRegExp("/id=\"publishModal\"/", $o);
+    $this->assertRegExp("/<input type=\"hidden\" name=\"id\" value=\"\"\/>/", $o);
+    $this->assertRegExp("/\/my_callback/", $o);
+
+    // Reset Output Callback.
+    $this->setOutputCallback(function ($o) { return $o;});
+
+    $this->expectOutputRegex("/value=\"1\"\/>/");
+    $this->assertTrue(self::$ci->blogger->loadEditor("my_callback", 1)); // Outputs Editor HTML.
   }
   /**
    * Test the blog post saving functionality of the library.
    * Create, Save, Publish, Create and Publish
+   *
+   * @testdox Blog Save Tested without Admin Constraint. √
    *
    * @depends testInstallBlog
    */
@@ -83,7 +120,6 @@ final class BlogTest extends TestCase {
     $_POST["editor"] = "The Quick Brown Fox Jumped over the Lazy Dog. Again.";
     $_POST["id"] = 1;
     $this->assertEquals(self::$ci->blogger->savePost(), Blogger::EDIT);
-    $this->assertTrue(self::$ci->blogger->renderPost("Hello-Title", null));
     $post = self::$ci->blogger->getPost("Hello-Title", false);
     $this->assertTrue(is_array($post));
     $this->assertArrayHasKey("id", $post);
@@ -140,7 +176,6 @@ final class BlogTest extends TestCase {
     $_POST["editor"] = "The Quick Brown Fox Jumped over the Lazy Dog. Again.";
     $_POST["id"] = 1;
     $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::EDIT);
-    $this->assertTrue(self::$ci->blogger->renderPost("Admin-Hello-Title", null));
     $post = self::$ci->blogger->getPost("Admin-Hello-Title", false);
     $this->assertTrue(is_array($post));
     $this->assertArrayHasKey("id", $post);
@@ -182,6 +217,20 @@ final class BlogTest extends TestCase {
     $this->assertEquals(1, $post["published"]);
     $this->assertNotEquals(null, $post["date_published"]);
     $this->assertEquals(Blogger::ABORT, self::$ci->blogger->savePost(1), "No 2 blog posts can have the same title.");
+  }
+  /**
+   * Test content of editor when editing post.
+   *
+   * @depends testBlogSaveWithAdmin
+   */
+  public function testEditPostUI(): void {
+    // === Collect Output ===
+    $this->setOutputCallback(function () {});
+    $this->assertTrue(self::$ci->blogger->loadEditor("a_callback", 1)); // Outputs Editor HTML.
+    $o = $this->getActualOutput();
+    // ==/ Collect Output ===
+    $this->assertRegExp("/<div id=\"content\" style=\"display:none;\">(\n|\r|\r\n)The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/div>/", $o);
+    $this->assertRegExp("/<div class=\"w3-padding w3-margin w3-border w3-round\" id=\"preview\">(\n|\r|\r\n)  <p>The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/p><\/div>/", $o);
   }
   /**
    * Test for Recent Post.
