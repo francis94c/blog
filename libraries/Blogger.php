@@ -368,16 +368,21 @@ class Blogger {
     return $this->ci->bmanager->getRecentPosts($limit, $filter);
   }
   /**
-   * [renderPost description]
-   * @param  [type] $post [description]
-   * @param  [type] $view [description]
-   * @return [type]       [description]
+   * [renderPost renders a single blog post. uses it's default view if not
+   * provided a $view]
+   *
+   * @param  array|int|string $post A post array, ID or Slug.
+   *
+   * @param  string           $view An alternate view to use for the body of the
+   *                                post.
+   *
+   * @return bool             True if successful, false if not.
    */
-  public function renderPost($post, $view=null) {
+  public function renderPost($post, $view=null): bool {
     if (!is_array($post)) $post = $this->ci->bmanager->getPost($post);
     if (!$post) return false;
     $post["content"] = $this->ci->parsedown->text($post["content"]);
-    if ($view == null) {
+    if ($view === null) {
       $this->ci->load->splint("francis94c/blog", "-post_item", $post);
     } else {
       $this->ci->load->view($view, $post);
@@ -385,23 +390,32 @@ class Blogger {
     return true;
   }
   /**
-   * [metaOg description]
-   * @param  [type] $post [description]
-   * @return [type]       [description]
+   * [metaOg Generates Open Graph HTML tags from a post array. This function
+   * should be hit from the controller method that loads a post for correct
+   * results as there's a call to the 'current_url' of Code Igniter's url helper
+   *  here.]
+   *
+   * @param  array   $post Post array.
+   *
+   * @return string        Open Graph HTML Meta Tags.
    */
-  public function metaOg($post) {
+  public function metaOg(array $post): string {
     $data = array();
     $data["title"] = $post["title"];
     $data["description"] = substr($post["content"], 0, 154);
     if (isset($post["share_image"])) $data["image_link"] = $post["share_image"];
     $data["url"] = current_url();
+    // Load Meta OG view.
     return $this->ci->load->splint(self::PACKAGE, "-meta_og", $data, true);
   }
   /**
-   * [getPostsCount description]
-   * @return [type] [description]
+   * [getPostsCount gets total number of posts in the current blog]
+   *
+   * TODO: Get for a given blog.
+   *
+   * @return int Posts count.
    */
-  public function getPostsCount() {
+  public function getPostsCount(): int {
     return $this->ci->bmanager->getPostsCount();
   }
   /**
