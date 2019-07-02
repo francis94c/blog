@@ -405,7 +405,7 @@ class Blogger {
     $data["description"] = substr($post["content"], 0, 154);
     if (isset($post["share_image"])) $data["image_link"] = $post["share_image"];
     $data["url"] = current_url();
-    // Load Meta OG view.
+    // Return Meta OG View String.
     return $this->ci->load->splint(self::PACKAGE, "-meta_og", $data, true);
   }
   /**

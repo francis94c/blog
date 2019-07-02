@@ -319,7 +319,7 @@ final class BlogEngineTest extends TestCase {
   /**
    * Test Posts Vount and Blog Delete.
    *
-   * @testdox Test Posts Count and Blog Delete.
+   * @testdox Test Posts Count and Blog Delete. √
    *
    * @depends testRenderPost
    */
@@ -333,6 +333,22 @@ final class BlogEngineTest extends TestCase {
     $_POST["id"] = self::$ci->blogger->getPost("Test-Filter", false)["id"];
     $this->assertEquals(Blogger::DELETE, self::$ci->blogger->savePost(1));
     $this->assertEquals(2, self::$ci->blogger->getPostsCount(false));
+  }
+  /**
+   * Test Meta OG
+   *
+   *@depends testPostCountAndPostDelete
+   *
+   * @testdox Test Open Graph Tags Generation. √
+   */
+  public function testMetaOG(): void {
+    $post = self::$ci->blogger->getPost("Admin-Hello-Title", false);
+    $og = self::$ci->blogger->metaOg($post);
+    $this->assertRegExp("/<meta name=\"description\" content=\"The Quick Brown Fox Jumped over the Lazy Dog. Again.\">/", $og);
+    $this->assertRegExp("/<meta property=\"og:title\" content=\"Admin Hello Title\">/", $og);
+    $this->assertRegExp("/<meta property=\"og:description\" content=\"The Quick Brown Fox Jumped over the Lazy Dog. Again.\">/", $og);
+    $this->assertRegExp("/<meta property=\"og:image\" content=\"\">/", $og);
+    $this->assertRegExp("/<meta name=\"twitter:card\" content=\"summary_large_image\">/", $og);
   }
   /**
    * Test No Action
@@ -361,7 +377,7 @@ final class BlogEngineTest extends TestCase {
 
     $this->assertRegExp("/A CARD HERE Admin Hello Title TOKEN <p>The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/p> ID = 1/", $o);
     $this->assertRegExp("/A CARD HERE Admin Hello Title 2 TOKEN <p>Create and Published Post.<\/p> ID = 2/", $o);
-    $this->assertRegExp("/the_gunners/", $o);    
+    $this->assertRegExp("/the_gunners/", $o);
   }
   /**
    * Test Setters and Getters.
