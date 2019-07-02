@@ -1,0 +1,1 @@
+BLOG<?=$title?>CONTENT<?=$content?>

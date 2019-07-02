@@ -9,6 +9,11 @@ final class BlogTest extends TestCase {
    * @var object
    */
   private static $ci;
+  /**
+   * Package name for simplicity
+   * @var string
+   */
+  private const PACKAGE = "francis94c/blog";
 
   /**
    * Prerquisites for the Unit Tests.
@@ -246,6 +251,9 @@ final class BlogTest extends TestCase {
     // Test MarkUp
     $this->expectOutputRegex("/<div class=\"w3-padding\">([\w(\r|\n|\r\n) <>\/.]+)<\/div>/");
     self::$ci->blogger->renderPost($post);
+    // Test Custom View.
+    $this->expectOutputRegex("/BLOGAdmin Hello TitleCONTENT<p>The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/p>/");
+    self::$ci->blogger->renderPost($post, "../splints/" . self::PACKAGE . "/unit_tests/views/test_post_item");
   }
   /**
    * Test Setters and Getters.
