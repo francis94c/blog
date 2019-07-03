@@ -380,6 +380,53 @@ final class BlogEngineTest extends TestCase {
     $this->assertRegExp("/the_gunners/", $o);
   }
   /**
+   * Test Pagination
+   *
+   * @testdox Test Pagination. √
+   *
+   * @depends testRenderPostItems
+   */
+  public function testPagination(): void {
+    self::$ci->blogger->setBlog("admin_test_blog");
+    // Populate Tables with post to make it up to 12 items in total.
+    // Current Posts count is 2.
+    $_POST["action"] = "createAndPublish";
+    $_POST["title"] = "Item 3"; // This is all that needs to be unique.
+    $_POST["editor"] = "The Quick Brown Fox Jumped over the Lazy Dog.";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 4";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 5";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 6";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 7";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 8";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 9";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 10";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 11";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $_POST["title"] = "Item 12";
+    $this->assertEquals(self::$ci->blogger->savePost(1), Blogger::CREATE_AND_PUBLISH);
+    $this->assertEquals(12, self::$ci->blogger->getPostsCount(false));
+    $this->assertCount(5, self::$ci->blogger->getPosts(1, 5)); // Page 1
+    $this->assertCount(5, self::$ci->blogger->getPosts(2, 5)); // Page 2
+    $this->assertCount(2, self::$ci->blogger->getPosts(3, 5)); // Page 3
+    $this->assertCount(0, self::$ci->blogger->getPosts(4, 5)); // Page 4 - Non Existent.
+    $posts = self::$ci->blogger->getPosts(1, 5);
+    $this->assertEquals("Item 12", $posts[0]["title"]);
+    $this->assertEquals("Item 8", $posts[4]["title"]);
+    $posts = self::$ci->blogger->getPosts(3, 5);
+    $this->assertEquals("Admin Hello Title 2", $posts[0]["title"]);
+    $this->assertEquals("Admin Hello Title", $posts[1]["title"]);
+    $posts = self::$ci->blogger->getPosts(2, 5);
+    $this->assertEquals("Item 7", $posts[0]["title"]);
+  }
+  /**
    * Test Setters and Getters.
    *
    * @testdox Getters and Setters. √
