@@ -79,14 +79,19 @@ class BlogManager extends CI_Model {
   /**
    * [getPosts get posts from the database by the given $page starting from the
    * value of 1 and returns $limit number of rows.]
+   *
    * @param  int     $page   Page number starting from 1.
+   *
    * @param  int     $limit  Number of posts to return.
+   *
    * @param  boolean $filter if true, returns only published posts, if false
    *                         return all posts. false by default.
+   *
    * @param  boolean $hits   order by hits.
+   *
    * @return array           Array of posts for a given page.
    */
-  function getPosts($page=1, $limit=5, $filter=false, $hits=false) {
+  function getPosts(int $page=1, int $limit=5, bool $filter=false, bool $hits=false): array {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
     if ($filter) $this->db->where("published", 1);
     if ($hits) {

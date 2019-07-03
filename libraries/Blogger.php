@@ -390,8 +390,8 @@ class Blogger {
     return true;
   }
   /**
-   * [metaOg A utility function that generates Open Graph HTML tags from a post
-   * array. This function should be hit from the controller method that loads a
+   * [metaOg A utility \function that generates Open Graph HTML tags from a post
+   * array. This \function should be hit from the controller method that loads a
    * post for correct results as there's a call to the 'current_url' of Code
    * Igniter's url helper here.]
    *
