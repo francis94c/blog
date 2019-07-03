@@ -147,6 +147,7 @@ class BlogManager extends CI_Model {
       if ($hit) {
         if ($this->ci->config->item("blogger_hits") === null ||
         $this->ci->config->item("blogger_hits") === true) {
+          if (!is_numeric($postId)) $postId = $query->result()[0]->id;
           $this->db->where("id", $postId);
           $this->db->set("hits", "hits+1", FALSE);
           $this->db->update($this->table_name);
@@ -172,7 +173,7 @@ class BlogManager extends CI_Model {
    * @param  [type] $postId [description]
    * @return [type]         [description]
    */
-  function getHits($postId) {
+  function getHits(int $postId): int {
     $this->db->where("id", $postId);
     $query = $this->db->get($this->table_name);
     if ($query->num_rows() > 0) return $query->result()[0]->hits;

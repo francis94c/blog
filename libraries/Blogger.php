@@ -5,7 +5,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Blogger {
 
   /**
-   * Code Igniter Instance
+   * Code Igniter Instance.
    * @var object
    */
   private $ci;
@@ -234,7 +234,7 @@ class Blogger {
   }
   /**
    * Handles form data from the Editor loaded by a call to 'loadEditor'.
-   * Traditionally, this function is to be called ath the controller function
+   * Traditionally, this \function is to be called ath the controller function
    * specified by the callback URI provided to the loadEditor method.
    *
    * @param  int $posterId ID of the poster. A valid admin ID from the table
@@ -362,9 +362,9 @@ class Blogger {
    *
    * @param  bool $filter If true, returns only published posts.
    *
-   * @return array          [description]
+   * @return array        Array of posts ordered by ID (Most recent first).
    */
-  public function getRecentPosts($limit=5, $filter=false): array {
+  public function getRecentPosts(int $limit=5, bool $filter=false): array {
     return $this->ci->bmanager->getRecentPosts($limit, $filter);
   }
   /**
@@ -378,7 +378,7 @@ class Blogger {
    *
    * @return bool             True if successful, false if not.
    */
-  public function renderPost($post, $view=null): bool {
+  public function renderPost($post, string $view=null): bool {
     if (!is_array($post)) $post = $this->ci->bmanager->getPost($post);
     if (!$post) return false;
     $post["content"] = $this->ci->parsedown->text($post["content"]);
@@ -417,23 +417,29 @@ class Blogger {
    *
    * @return int          Posts count.
    */
-  public function getPostsCount($filter=true): int {
+  public function getPostsCount(bool $filter=true): int {
     return $this->ci->bmanager->getPostsCount($filter);
   }
   /**
-   * [getPost description]
-   * @param  [type] $postId [description]
-   * @return [type]         [description]
+   * [getPost gets a post array.]
+   *
+   * @param  int    $postId ID of the post to retrieve.
+   *
+   * @param  bool   $hit    Increment the post's hit count.
+   *
+   * @return array          An associative array of a single post.
    */
   public function getPost($postId, $hit=true) {
     return $this->ci->bmanager->getPost($postId, $hit);
   }
   /**
-   * [getHits description]
-   * @param  [type] $postId [description]
-   * @return [type]         [description]
+   * [getHits gets the number of hits for a particular post.]
+   *
+   * @param  int    $postId Post ID.
+   *
+   * @return int            Number of hits (Times viewed or read).
    */
-  public function getHits($postId) {
+  public function getHits(int $postId): int {
     return $this->ci->bmanager->getHits($postId);
   }
   /**

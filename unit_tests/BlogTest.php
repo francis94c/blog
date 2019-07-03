@@ -427,6 +427,21 @@ final class BlogEngineTest extends TestCase {
     $this->assertEquals("Item 7", $posts[0]["title"]);
   }
   /**
+   * Test Post Hit Counting.
+   *
+   * @testdox Test Post Hit Counting logic.
+   *
+   * @depends testPagination
+   */
+  public function testPostHitCount(): void {
+    $this->assertEquals(0, self::$ci->blogger->getPost("Item-12", false)["hits"]);
+    self::$ci->blogger->getPost("Item-12", true);
+    self::$ci->blogger->getPost("Item-12", true);
+    self::$ci->blogger->getPost("Item-12", true);
+    $this->assertEquals(3, self::$ci->blogger->getPost("Item-12", false)["hits"]);
+    $this->assertEquals(3, self::$ci->blogger->getHits((int) self::$ci->blogger->getPost("Item-12", false)["id"]));
+  }
+  /**
    * Test Setters and Getters.
    *
    * @testdox Getters and Setters. √
