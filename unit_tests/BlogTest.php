@@ -26,7 +26,7 @@ final class BlogEngineTest extends TestCase {
       "INSERT INTO admins (id, name, password) VALUES (1, \"Dev\", \"does_not_matter_for_this_test\");"
     ];
     foreach ($queries as $query) {
-      self::assertTrue(self::$ci->db->query($query), "$query, Ran sucessfully.");
+      self::assertTrue(self::$ci->db->query($query), "$query, Failed to Run.");
     }
     self::$ci->load->splint("francis94c/blog", "+Blogger", null, "blogger");
   }
@@ -440,6 +440,20 @@ final class BlogEngineTest extends TestCase {
     self::$ci->blogger->getPost("Item-12", true);
     $this->assertEquals(3, self::$ci->blogger->getPost("Item-12", false)["hits"]);
     $this->assertEquals(3, self::$ci->blogger->getHits((int) self::$ci->blogger->getPost("Item-12", false)["id"]));
+  }
+  /**
+   * Test Post Publish Function.
+   *
+   * @testdox Test Post Publish Function.
+   *
+   * @depends testPostHitCount
+   */
+  public function testPostPostPublishFunction(): void {
+    $post = self::$ci->blogger->getPost("Item-12", false);
+    self::$ci->blogger->publishPost((int) $post["id"], false);
+    $this->assertEquals(0, self::$ci->blogger->getPost("Item-12")["published"]);
+    self::$ci->blogger->publishPost((int) $post["id"], true);
+    $this->assertEquals(1, self::$ci->blogger->getPost("Item-12")["published"]);
   }
   /**
    * Test Setters and Getters.

@@ -443,12 +443,12 @@ class Blogger {
     return $this->ci->bmanager->getHits($postId);
   }
   /**
-   * [publishPost description]
-   * @param  [type] $postId  [description]
-   * @param  [type] $publish [description]
-   * @return [type]          [description]
+   * [publishPost Publish or Un Publish a Post.]
+   * @param  int    $postId  Post ID
+   * @param  bool   $publish Publish Or Un-Publish
+   * @return bool            True if operation was successful, False if not.
    */
-  public function publishPost($postId, $publish) {
+  public function publishPost(int $postId, bool $publish): bool {
     return $this->ci->bmanager->publishPost($postId, $publish);
   }
   /**
