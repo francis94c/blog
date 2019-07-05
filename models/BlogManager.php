@@ -217,7 +217,7 @@ class BlogManager extends CI_Model {
    * @param  boolean $filter [description]
    * @return [type]          [description]
    */
-  function searchPosts($words, $page, $limit=5, $filter=false) {
+  function searchPosts($words, $page=1, $limit=5, $filter=false) {
     if ($limit != 0) $this->db->limit($limit, ($page * $limit) - $limit);
     if ($filter) $this->db->where("published", 1);
     $this->db->like("title", $words);

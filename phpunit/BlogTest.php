@@ -208,6 +208,7 @@ final class BlogEngineTest extends TestCase {
     $this->assertTrue(is_array($post));
     $this->assertEquals(1, $post["published"]);
     $this->assertNotEquals(null, $post["date_published"]);
+    // Create And Publish At Once.
     $_POST["action"] = "createAndPublish";
     $_POST["title"] = "Admin Hello Title 2";
     $_POST["editor"] = "Create and Published Post.";
@@ -434,6 +435,7 @@ final class BlogEngineTest extends TestCase {
    * @depends testPagination
    */
   public function testPostHitCount(): void {
+    self::$ci->blogger->setBlog("admin_test_blog");
     $this->assertEquals(0, self::$ci->blogger->getPost("Item-12", false)["hits"]);
     self::$ci->blogger->getPost("Item-12", true);
     self::$ci->blogger->getPost("Item-12", true);
@@ -448,12 +450,32 @@ final class BlogEngineTest extends TestCase {
    *
    * @depends testPostHitCount
    */
-  public function testPostPostPublishFunction(): void {
+  public function testPostPublishFunction(): void {
+    self::$ci->blogger->setBlog("admin_test_blog");
     $post = self::$ci->blogger->getPost("Item-12", false);
     self::$ci->blogger->publishPost((int) $post["id"], false);
     $this->assertEquals(0, self::$ci->blogger->getPost("Item-12")["published"]);
     self::$ci->blogger->publishPost((int) $post["id"], true);
     $this->assertEquals(1, self::$ci->blogger->getPost("Item-12")["published"]);
+  }
+  /**
+   * Test Search Posts.
+   *
+   * @testdox Test Search Posts
+   *
+   * @depends testPostHitCount
+   */
+  public function testSearchPosts(): void {
+    // The expected Results are gotten from the actions of the tests this test
+    // depends on.
+
+    // Title Search
+    $this->assertCount(5, self::$ci->blogger->searchPosts("Item"));
+    $this->assertCount(5, self::$ci->blogger->searchPosts("Item", 2));
+    $this->assertCount(0, self::$ci->blogger->searchPosts("Item", 3));
+
+    // Body Search.
+    $this->assertCount(1, self::$ci->blogger->searchPosts("Fox", 3));
   }
   /**
    * Test Setters and Getters.

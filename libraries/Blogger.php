@@ -467,16 +467,16 @@ class Blogger {
    * @param  string  $words  Word/Phrase to search for in Title and Content
    *                         fields.
    *
-   * @param  int     $page   Page Number to retrive from result.
+   * @param  int     $page   Page Number to retrive from result. Default is 1
    *
-   * @param  int     $limit  The max number peer page.
+   * @param  int     $limit  The max number peer page. Default is 5.
    *
    * @param  bool    $filter If true, returns only matched pulished posts, else
    *                         returns all matched posts.
    *
    * @return array           Array of matched posts.
    */
-  public function searchPosts(string $words, int $page, int $limit=5, bool $filter=false): array {
+  public function searchPosts(string $words, int $page=1, int $limit=5, bool $filter=false): array {
     return $this->ci->bmanager->searchPosts($words, $page, $limit, $filter);
   }
 }
