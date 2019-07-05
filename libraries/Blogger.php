@@ -170,6 +170,14 @@ class Blogger {
     return $this->table_name;
   }
   /**
+   * [getBlogManager Returns the BlogManager Model object.]
+   * 
+   * @return BlogManager BlogManager Model Object.
+   */
+  public function &getBlogManager(): BlogManager {
+    return $this->ci->bmanager;
+  }
+  /**
    * Loads/echoes the client side scripts needed for the blog to render it's
    * post editor and other views.
    *
