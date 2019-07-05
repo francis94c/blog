@@ -9,7 +9,7 @@
 	testdox="true">
 	<testsuites>
 		<testsuite name="Blog Test Suite">
-			<file>travis-splint-0.0.2/application/splints/francis94c/blog/unit_tests/BlogTest.php</file>
+			<file>travis-splint-0.0.2/application/splints/francis94c/blog/phpunit/BlogTest.php</file>
 		</testsuite>
 	</testsuites>
 	<logging>
@@ -19,10 +19,10 @@
 		<whitelist addUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog</directory>
 			<exclude>
-				<file>travis-splint-0.0.2/application/splints/francis94c/blog/unit_tests/BlogTest.php</file>
+				<file>travis-splint-0.0.2/application/splints/francis94c/blog/phpunit/BlogTest.php</file>
 				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog/tests</directory>
 				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog/views</directory>
-				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog/unit_tests/views</directory>
+				<directory suffix=".php">./travis-splint-0.0.2/application/splints/francis94c/blog/phpunit/views</directory>
 			</exclude>
 		</whitelist>
   </filter>

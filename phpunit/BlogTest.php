@@ -314,7 +314,7 @@ final class BlogEngineTest extends TestCase {
     self::$ci->blogger->renderPost($post);
     // Test Custom View.
     $this->expectOutputRegex("/BLOGAdmin Hello TitleCONTENT<p>The Quick Brown Fox Jumped over the Lazy Dog. Again.<\/p>/");
-    self::$ci->blogger->renderPost($post, "../splints/" . self::PACKAGE . "/unit_tests/views/test_post_item");
+    self::$ci->blogger->renderPost($post, "../splints/" . self::PACKAGE . "/phpunit/views/test_post_item");
   }
   /**
    * Test Posts Vount and Blog Delete.
@@ -371,7 +371,7 @@ final class BlogEngineTest extends TestCase {
   public function testRenderPostItems(): void {
     // === Collect Output ===
     $this->setOutputCallback(function () {});
-    $this->assertTrue(self::$ci->blogger->renderPostItems("../splints/" . self::PACKAGE . "/unit_tests/views/test_post_card_item", "the_gunners"));
+    $this->assertTrue(self::$ci->blogger->renderPostItems("../splints/" . self::PACKAGE . "/phpunit/views/test_post_card_item", "the_gunners"));
     $o = $this->getActualOutput();
     // ==/ Collect Output ===
 

@@ -452,22 +452,31 @@ class Blogger {
     return $this->ci->bmanager->publishPost($postId, $publish);
   }
   /**
-   * [deletePost description]
-   * @param  [type] $postId [description]
-   * @return [type]         [description]
+   * [deletePost Deletes a Post.]
+   *
+   * @param  int    $postId Post ID
+   *
+   * @return bool           True if successful, false if not.
    */
-  public function deletePost($postId) {
+  public function deletePost(int $postId): bool {
     return $this->ci->bmanager->deletePost($postId);
   }
   /**
-   * [searchPosts description]
-   * @param  [type]  $words  [description]
-   * @param  [type]  $page   [description]
-   * @param  integer $limit  [description]
-   * @param  boolean $filter [description]
-   * @return [type]          [description]
+   * [searchPosts Searches through posts in the blog/database.]
+   *
+   * @param  string  $words  Word/Phrase to search for in Title and Content
+   *                         fields.
+   *
+   * @param  int     $page   Page Number to retrive from result.
+   *
+   * @param  int     $limit  The max number peer page.
+   *
+   * @param  bool    $filter If true, returns only matched pulished posts, else
+   *                         returns all matched posts.
+   *
+   * @return array           Array of matched posts.
    */
-  public function searchPosts($words, $page, $limit=0, $filter=false) {
+  public function searchPosts(string $words, int $page, int $limit=5, bool $filter=false): array {
     return $this->ci->bmanager->searchPosts($words, $page, $limit, $filter);
   }
 }
